@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 #pint
 #python interval library
-#version 0.1.1
-#まだ著作権関連の処理ができていないため、大変危険
+#version Pre-Alpha 0.1.1
+
+#Copyright (c) 2015 o108minmin
+
 import sys as __sys__
 import math as __math__
 from enum import IntEnum
@@ -13,12 +15,17 @@ class roundmode(IntEnum):
     down=-1
 
 class roundfloat:
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def split(a):
         tmp=a*(2**27+1)
         x=tmp-(tmp-a)
         y=a-x
         return x,y
 
+    #from S. M. Rump, P. Zimmermann, S. Boldo and G. Melquiond:
+    #“Computing predeces- sor and successor in rounding to nearest”, BIT Vol. 49, No. 2, pp.419–431, 2009 (http://www.ti3.tu-harburg.de/paper/rump/RuZiBoMe08.pdf)
     def succ(a):
         absa=abs(a)
         if absa >= 2.**(-969):
@@ -28,7 +35,8 @@ class roundfloat:
         c=2.**(53)*a
         e=(2.**(-53)+2.**(-105))*abs(c)
         return (c+e)*2.**(-53)
-
+    #from S. M. Rump, P. Zimmermann, S. Boldo and G. Melquiond
+    #“Computing predeces- sor and successor in rounding to nearest”, BIT Vol. 49, No. 2, pp.419–431, 2009 (http://www.ti3.tu-harburg.de/paper/rump/RuZiBoMe08.pdf)
     def pred(a):
         absa=abs(a)
         if absa >= 2.**(-969):
@@ -38,7 +46,9 @@ class roundfloat:
         c=2.**(53)*a
         e=(2.**(-53)+2.**(-105))*abs(c)
         return (c-e)*2.**(-53)
-
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def twosum(a,b):
         floatArg1=a
         floatArg2=b
@@ -51,6 +61,9 @@ class roundfloat:
             y=floatArg1-tmp
         return x,y
 
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def twoproduct(a,b):
         floatArg1=a
         floatArg2=b
@@ -72,6 +85,9 @@ class roundfloat:
             y=floatArg1SplitDown*floatArg2SplitDown-(((x-floatArg1SplitUp*floatArg2SplitUp)-floatArg1SplitDown*floatArg2SplitUp)-floatArg1SplitUp*floatArg2SplitDown)
         return x,y
 
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def roundadd(a,b,rmode=roundmode.nearest):
         floatArg1=float(a)
         floatArg2=float(b)
@@ -101,6 +117,9 @@ class roundfloat:
     def roundsub(a,b,rmode=roundmode.nearest):
         return roundfloat.roundadd(a,b,rmode)
 
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def roundmul(a,b,rmode=roundmode.nearest):
         floatArg1=float(a)
         floatArg2=float(b)
@@ -135,6 +154,9 @@ class roundfloat:
                     return roundfloat.pred(x)
         return x
 
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def rounddiv(a,b,rmode=roundmode.nearest):
         floatArg1=float(a)
         floatArg2=float(b)
@@ -197,6 +219,9 @@ class roundfloat:
                 return roundfloat.pred(d)
             return d
 
+    #from Masahide Kashiwagi
+    #最近点丸めによる方向付き丸めのエミュレート
+    #http://verifiedby.me/adiary/029
     def roundsqrt(x,rmode=roundmode.nearest):
         floatArg=float(x)
         d = __math__.sqrt(floatArg)
@@ -267,7 +292,6 @@ class interval:
         elif arg.__class__.__name__=='interval':
             #down
             intervalArg.inf=roundfloat.roundsub(self.inf,arg.sup,roundmode.down)
-            #intervalArg.inf=self.inf-arg.sup
             #up
             intervalArg.sup=roundfloat.roundsub(self.sup,arg.inf,roundmode.up)
             #intervalArg.sup=self.sup-arg.inf
@@ -350,13 +374,19 @@ class interval:
                     intervalAnswer.sup = roundfloat.rounddiv(self.sup,arg.inf,roundmode.up)
             elif arg.sup < 0.:
                 if self.inf >= 0.:
+                    #down
                     intervalAnswer.inf = roundfloat.rounddiv(self.sup,arg.sup,roundmode.down)
+                    #up
                     intervalAnswer.sup = roundfloat.rounddiv(self.inf,arg.inf,roundmode.up)
                 elif self.sup < 0.:
+                    #down
                     intervalAnswer.inf = roundfloat.rounddiv(self.sup,arg.inf,roundmode.down)
+                    #up
                     intervalAnswer.sup = roundfloat.rounddiv(self.inf,arg.sup,roundmode.up)
                 else:
+                    #down
                     intervalAnswer.inf = roundfloat.rounddiv(self.sup,arg.sup,roundmode.down)
+                    #up
                     intervalAnswer.sup = roundfloat.rounddiv(self.inf,arg.sup,roundmode.up)
             else:
                 pass
@@ -376,7 +406,9 @@ class interval:
 
     def sqrt(self):
         answer = interval(0.)
+        #down
         answer.inf = roundfloat.roundsqrt(self.inf,roundmode.down)
+        #up
         answer.sup = roundfloat.roundsqrt(self.sup,roundmode.up)
         return answer
 
