@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .core import *
+from .core import roundmode,roundfloat
 
 class interval:
     inf = 0.
