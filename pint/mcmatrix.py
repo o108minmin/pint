@@ -3,7 +3,7 @@ from .interval import interval
 
 
 class mcmatrix(list):
-
+    #size=mcmatrix.
     def __init__(self, arg):
         list.__init__(self)
         if arg.__class__.__name__ == "list":
@@ -66,3 +66,31 @@ class mcmatrix(list):
 
     def __neg__(self):
         return mcmatrix.__mul__(self, -1.)
+
+    def transpose(self):
+        if self[0].__class__.__name__ == "mcmatrix":
+            vertical = self.__len__()
+            horiontal = self[0].__len__()
+            answer = mcmatrix.zeros([horiontal,vertical])
+            for i in range(0,horiontal,1):
+                for j in range(0,vertical,1):
+                    answer[i][j] = self[j][i]
+        return answer
+
+    def T(self):
+        return mcmatrix.transpose(self)
+
+    def numbers(shape, arg):
+        answer = list()
+        column = list()
+        for j in range(0,shape[1],1):
+            column.append(arg)
+        for i in range(0,shape[0],1):
+            answer.append(column)
+        return mcmatrix(answer)
+
+    def ones(shape):
+        return mcmatrix.numbers(shape, 1.)
+
+    def zeros(shape):
+        return mcmatrix.numbers(shape, 0.)
