@@ -3,10 +3,12 @@ from .interval import interval
 
 
 class mcmatrix(list):
-    #size=mcmatrix.
+    size = 0
+    shape = 0
     def __init__(self, arg):
         list.__init__(self)
         if arg.__class__.__name__ == "list":
+
             for i in range(0, arg.__len__(), 1):
                 if arg[i].__class__.__name__ == "list":
                     self.append(mcmatrix(arg[i]))
@@ -14,6 +16,8 @@ class mcmatrix(list):
                     self.append(arg[i])
         else:
             self.append(arg[i])
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
 
     def __add__(self, arg):
         answer = list()
@@ -94,3 +98,22 @@ class mcmatrix(list):
 
     def zeros(shape):
         return mcmatrix.numbers(shape, 0.)
+
+    def calcsize(self):
+        answer = 0
+        for i in range(0,self.__len__(),1):
+            if self[i].__class__.__name__ == "mcmatrix":
+                answer += self[i].calcsize()
+            else :
+                answer += 1
+        return answer
+
+    def calcshape(self):
+        if self[0].__class__.__name__ == "mcmatrix":
+            return tuple(list([self.__len__(),self[0].__len__()]))
+        else :
+            return tuple(list([self.__len__()]))
+
+    #TODO: I must modify append method for calcsize and calcshape.
+    #def append():
+        #pass
