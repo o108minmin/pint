@@ -115,5 +115,32 @@ class mcmatrix(list):
             return tuple(list([self.__len__()]))
 
     #TODO: I must modify append method for calcsize and calcshape.
-    #def append():
-        #pass
+    def append(self, arg):
+        list.append(self,arg)
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
+
+    def extend(self, arg):
+        list.append(self,arg)
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
+
+    def insert(self, arg):
+        list.insert(self,arg)
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
+
+    def remove(self, arg):
+        list.remove(self,arg)
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
+
+    def pop(self, arg):
+        list.pop(self,arg)
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
+
+    def clear(self, arg):
+        list.clear()
+        self.size = self.calcsize()
+        self.shape = self.calcshape()
