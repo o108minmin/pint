@@ -71,6 +71,7 @@ class mcmatrix(list):
     def __neg__(self):
         return mcmatrix.__mul__(self, -1.)
 
+    #matrix methods
     def transpose(self):
         if self[0].__class__.__name__ == "mcmatrix":
             vertical = self.__len__()
@@ -114,7 +115,35 @@ class mcmatrix(list):
         else :
             return tuple(list([self.__len__()]))
 
-    #TODO: I must modify append method for calcsize and calcshape.
+    def dot(a, b):
+        if (a.__class__.__name__ != "mcmatrix" or
+            b.__class__.__name__ != "mcmatrix"):
+            return a*b
+        elif (a[0].__class__.__name__ != "mcmatrix" and
+            b[0].__class__.__name__ != "mcmatrix"):
+            answer = 0.
+            for i in range(0,a.__len__(),1):
+                answer += a[i] * b[i]
+            return answer
+        vertical = a.__len__()
+        if a[0].__class__.__name__ == "mcmatrix":
+            lengthTemp = a[0].__len__()
+        else :
+            lengthTemp = a.__len__()
+        lengthTemp = b.__len__()
+        if b[0].__class__.__name__ == "mcmatrix":
+            horiontal = b[0].__len__()
+        else :
+            horiontal = b.__len__()
+        answer = mcmatrix.zeros([vertical,horiontal])
+        #TODO: Change more fast algorithm e.g. loop unrolling
+        for i in range(0,vertical,1):
+            for j in range(0,horiontal,1):
+                for k in range(0,lengthTemp,1):
+                    answer[i][j] += a[i][k] * b[k][j]
+        return answer
+
+    #default list methods
     def append(self, arg):
         list.append(self,arg)
         self.size = self.calcsize()
