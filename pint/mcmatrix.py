@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .core import roundmode, roundfloat
 from .interval import interval
 
@@ -8,7 +9,6 @@ class mcmatrix(list):
     def __init__(self, arg):
         list.__init__(self)
         if arg.__class__.__name__ == "list":
-
             for i in range(0, arg.__len__(), 1):
                 if arg[i].__class__.__name__ == "list":
                     self.append(mcmatrix(arg[i]))
@@ -116,60 +116,68 @@ class mcmatrix(list):
             return tuple(list([self.__len__()]))
 
     def dot(a, b):
-        if (a.__class__.__name__ != "mcmatrix" or
-            b.__class__.__name__ != "mcmatrix"):
-            return a*b
-        elif (a[0].__class__.__name__ != "mcmatrix" and
-            b[0].__class__.__name__ != "mcmatrix"):
+        mata=a
+        matb=b
+        if (mata.__class__.__name__ != "mcmatrix" or
+            matb.__class__.__name__ != "mcmatrix"):
+            return mata*matb
+        elif (mata[0].__class__.__name__ != "mcmatrix" and
+            matb[0].__class__.__name__ != "mcmatrix"):
             answer = 0.
-            for i in range(0,a.__len__(),1):
-                answer += a[i] * b[i]
+            for i in range(0,mata.__len__(),1):
+                answer += mata[i] * matb[i]
             return answer
-        vertical = a.__len__()
-        if a[0].__class__.__name__ == "mcmatrix":
-            lengthTemp = a[0].__len__()
+        vertical = mata.__len__()
+        if mata[0].__class__.__name__ == "mcmatrix":
+            lengthTemp = mata[0].__len__()
         else :
-            lengthTemp = a.__len__()
-        lengthTemp = b.__len__()
-        if b[0].__class__.__name__ == "mcmatrix":
-            horiontal = b[0].__len__()
+            lengthTemp = mata.__len__()
+        lengthTemp = matb.__len__()
+        if matb[0].__class__.__name__ == "mcmatrix":
+            horiontal = matb[0].__len__()
         else :
-            horiontal = b.__len__()
+            horiontal = matb.__len__()
         answer = mcmatrix.zeros([vertical,horiontal])
         #TODO: Change more fast algorithm e.g. loop unrolling
         for i in range(0,vertical,1):
             for j in range(0,horiontal,1):
                 for k in range(0,lengthTemp,1):
-                    answer[i][j] += a[i][k] * b[k][j]
+                    answer[i][j] += mata[i][k] * matb[k][j]
         return answer
 
     #default list methods
-    def append(self, arg):
-        list.append(self,arg)
+    def append(self, object):
+        answer = list.append(self,object)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
 
-    def extend(self, arg):
-        list.append(self,arg)
+    def extend(self, iterable):
+        answer = list.append(self,iterable)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
 
-    def insert(self, arg):
-        list.insert(self,arg)
+    def insert(self, index, object):
+        answer = list.insert(self, index, object)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
 
-    def remove(self, arg):
-        list.remove(self,arg)
+    def remove(self, value):
+        answer = list.remove(self, value)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
 
-    def pop(self, arg):
-        list.pop(self,arg)
+    def pop(self, *index):
+        answer = list.pop(self, *index)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
 
-    def clear(self, arg):
-        list.clear()
+    def clear(self):
+        answer = list.clear(self)
         self.size = self.calcsize()
         self.shape = self.calcshape()
+        return answer
