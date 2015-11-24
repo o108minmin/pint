@@ -280,3 +280,21 @@ class interval:
 
     def whole():
         return interval(float("inf"), -float("inf"))
+
+    #math functions
+    class math:
+        def sqrt(arg):
+            answer = interval(0.)
+            answer.inf = roundfloat.rdsqrt(arg.inf, roundmode.down)
+            answer.sup = roundfloat.rdsqrt(arg.sup, roundmode.up)
+            return answer
+
+        def fabs(arg):
+            if arg.inf >= 0.:
+                return arg;
+            if arg.sup <= 0.:
+                return -arg;
+            tmp = -arg.inf;
+            if arg.sup > tmp:
+                tmp = arg.sup;
+            return interval(0., tmp);

@@ -6,10 +6,9 @@ import math
 
 def vmath():
     def sqrt(self, arg):
+        #TODO: Make more better if else
         if arg.__class__.__name__ == "interval":
-            answer = interval(0.)
-            answer.inf = roundfloat.rdsqrt(self.inf, roundmode.down)
-            answer.sup = roundfloat.rdsqrt(self.sup, roundmode.up)
+            answer = arg.math.sqrt(arg)
         else:
             answer = math.sqrt(arg)
         return answer
