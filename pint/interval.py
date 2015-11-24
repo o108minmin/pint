@@ -265,6 +265,9 @@ class interval:
     def __repr__(self):
         return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
 
+    def __neg__(self):
+        return interval(-self.sup,-self.inf)
+
     # interval tools
     def hull(a, b):
         tmp1 = a.inf
