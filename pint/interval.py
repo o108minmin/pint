@@ -151,12 +151,6 @@ class interval:
     def __repr__(self):
         return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
 
-    # math function
-    def sqrt(self):
-        answer = interval(0.)
-        answer.inf = roundfloat.rdsqrt(self.inf, roundmode.down)
-        answer.sup = roundfloat.rdsqrt(self.sup, roundmode.up)
-        return answer
     def __radd__(self, arg):
         return interval.__add__(self, arg)
 
@@ -271,4 +265,15 @@ class interval:
     def __repr__(self):
         return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
 
+    # interval tools
+    def hull(a, b):
+        tmp1 = a.inf
+        if b.inf < tmp1:
+            tmp1 = b.inf
+        tmp2 = a.sup
+        if b.sup > tmp2:
+            tmp2 = b.sup
+        return interval(tmp1, tmp2)
 
+    def whole():
+        return interval(float("inf"), -float("inf"))

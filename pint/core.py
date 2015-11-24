@@ -208,7 +208,7 @@ class roundfloat:
 
     def rdsqrt(x, rmode=roundmode.nearest):
         arg = float(x)
-        d = __math__.sqrt(arg)
+        d = math.sqrt(arg)
         if rmode == roundmode.up:
             if arg < 2.**(-969):
                 a2 = arg * 2.**106
@@ -230,4 +230,3 @@ class roundfloat:
             if x > arg or (x == arg and y > 0.):
                 d = roundfloat.pred(d)
         return d
-
