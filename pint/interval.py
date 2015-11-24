@@ -268,6 +268,9 @@ class interval:
     def __neg__(self):
         return interval(-self.sup,-self.inf)
 
+    def __abs__(arg):
+        return arg.math.fabs(arg)
+
     # interval tools
     def hull(a, b):
         tmp1 = a.inf
