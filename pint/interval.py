@@ -308,3 +308,10 @@ class interval:
             if arg.sup != arg.sup:
                 return True
             return False
+
+        def isinf(arg):
+            if arg.inf == float("inf") or arg.inf == float("-inf"):
+                return True
+            if arg.sup == float("inf") or arg.sup == float("-inf"):
+                return True
+            return False
