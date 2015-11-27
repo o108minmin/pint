@@ -301,3 +301,10 @@ class interval:
             if arg.sup > tmp:
                 tmp = arg.sup;
             return interval(0., tmp);
+
+        def isnan(arg):
+            if arg.inf != arg.inf:
+                return True
+            if arg.sup != arg.sup:
+                return True
+            return False
