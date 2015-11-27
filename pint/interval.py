@@ -315,3 +315,10 @@ class interval:
             if arg.sup == float("inf") or arg.sup == float("-inf"):
                 return True
             return False
+
+        def isfinite(arg):
+            if interval.math.isnan(arg) == True:
+                return False
+            if interval.math.isinf(arg) == True:
+                return False
+            return True
