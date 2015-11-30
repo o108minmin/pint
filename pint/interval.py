@@ -343,7 +343,7 @@ class interval:
             return answer
 
         def exp(x):
-            return interval(roundfloat.pred(math.exp(x)), roundfloat.succ(math.exp(x)))
+            return interval(roundfloat.pred(math.exp(x.inf)), roundfloat.succ(math.exp(x.sup)))
 
         #TODO: Fix lazy expm1 (significant loss of precision)
         def expm1(x):
