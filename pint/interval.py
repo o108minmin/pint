@@ -277,6 +277,10 @@ class interval:
 
     # interval tools
     def hull(a, b):
+        if a.__class__.__name__ != "interval":
+            a = interval(a)
+        if b.__class__.__name__ != "interval":
+            b = interval(b)
         tmp1 = a.inf
         if b.inf < tmp1:
             tmp1 = b.inf
