@@ -342,5 +342,8 @@ class interval:
                 answer *= x
             return answer
 
+        def exp(x):
+            return interval.math.e() ** x
+
         def ldexp(x, i):
             return x * (2 ** i)
