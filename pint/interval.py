@@ -290,6 +290,9 @@ class interval:
         def e():
             return interval(math.e, roundfloat.succ(math.e))
 
+        def pi():
+            return interval(math.pi, roundfloat.succ(math.pi))
+
         def sqrt(arg):
             answer = interval(0.)
             answer.inf = roundfloat.rdsqrt(arg.inf, roundmode.down)
