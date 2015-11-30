@@ -329,3 +329,12 @@ class interval:
             if interval.math.isinf(arg) == True:
                 return False
             return True
+
+        def pow(x, i):
+            # TODO: write pow(x, interval i)
+            if i.__class__.__name__ == "interval":
+                pass
+            answer = interval(1.)
+            for times in range(0,i,1):
+                answer *= x
+            return answer
