@@ -345,5 +345,9 @@ class interval:
         def exp(x):
             return interval.math.e() ** x
 
+        #TODO: Fix lazy expm1
+        def expm1(x):
+            return interval.math.exp(x) - 1.
+
         def ldexp(x, i):
             return x * (2 ** i)
