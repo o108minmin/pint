@@ -341,3 +341,6 @@ class interval:
             for times in range(0,i,1):
                 answer *= x
             return answer
+
+        def ldexp(x, i):
+            return x * (2 ** i)
