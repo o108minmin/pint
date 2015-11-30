@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .core import roundmode,roundfloat
+import math
 
 class interval:
     inf = 0.
@@ -286,6 +287,9 @@ class interval:
 
     #math functions
     class math:
+        def e():
+            return interval(math.e, roundfloat.succ(math.e))
+
         def sqrt(arg):
             answer = interval(0.)
             answer.inf = roundfloat.rdsqrt(arg.inf, roundmode.down)
