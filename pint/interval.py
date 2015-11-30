@@ -272,6 +272,9 @@ class interval:
     def __abs__(arg):
         return arg.math.fabs(arg)
 
+    def __pow__(a, b):
+        return interval.math.pow(a, b)
+
     # interval tools
     def hull(a, b):
         tmp1 = a.inf
