@@ -343,9 +343,9 @@ class interval:
             return answer
 
         def exp(x):
-            return interval.math.e() ** x
+            return interval(roundfloat.pred(math.exp(x)), roundfloat.succ(math.exp(x)))
 
-        #TODO: Fix lazy expm1
+        #TODO: Fix lazy expm1 (significant loss of precision)
         def expm1(x):
             return interval.math.exp(x) - 1.
 
