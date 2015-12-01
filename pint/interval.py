@@ -355,3 +355,7 @@ class interval:
 
         def ldexp(x, i):
             return x * (2 ** i)
+
+        def log(x):
+            return interval(roundfloat.pred(math.log(x.inf)),roundfloat.succ(math.log(x.sup)))
+        
