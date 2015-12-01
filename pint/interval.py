@@ -357,5 +357,7 @@ class interval:
             return x * (2 ** i)
 
         def log(x):
-            return interval(roundfloat.pred(math.log(x.inf)),roundfloat.succ(math.log(x.sup)))
-        
+            return interval(roundfloat.pred(math.log(x.inf)), roundfloat.succ(math.log(x.sup)))
+
+        def log2(x):
+            return interval(roundfloat.pred(math.log2(x.inf)), roundfloat.succ(math.log(x.sup)))
