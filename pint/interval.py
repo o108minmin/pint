@@ -356,8 +356,12 @@ class interval:
         def ldexp(x, i):
             return x * (2 ** i)
 
+        #TODO: Fix log, log2 and log10 for x(double)
         def log(x):
             return interval(roundfloat.pred(math.log(x.inf)), roundfloat.succ(math.log(x.sup)))
 
         def log2(x):
             return interval(roundfloat.pred(math.log2(x.inf)), roundfloat.succ(math.log(x.sup)))
+
+        def log10(x):
+            return interval(roundfloat.pred(math.log10(x.inf)),roundfloat.succ(math.log10(x.sup)))
