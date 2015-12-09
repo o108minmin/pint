@@ -333,6 +333,9 @@ class interval:
             tmp = x.sup
         return tmp
 
+    def mag(x):
+        return norm(x)
+
 
     #math functions
     class math:
