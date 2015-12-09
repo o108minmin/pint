@@ -293,6 +293,13 @@ class interval:
     def whole():
         return interval(float("inf"), -float("inf"))
 
+    def subset(x, y):
+        if y.inf <= x.inf and x.sup <= y.sup:
+            return True
+        else:
+            return False
+
+
     #math functions
     class math:
         def e():
