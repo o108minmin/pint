@@ -311,6 +311,18 @@ class interval:
         else:
             return False
 
+    def overlap(x, y):
+        tmp1 = x.inf
+        if y.inf > tmp1:
+            tmp1 = y.inf
+        tmp2 = x.sup
+        if y.sup < tmp2:
+            tmp2 = y.sup
+        if tmp1 <= tmp2:
+            return True
+        else:
+            return False
+
 
     #math functions
     class math:
