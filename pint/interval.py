@@ -336,6 +336,10 @@ class interval:
     def mag(x):
         return norm(x)
 
+    def width(x):
+        answer = rf.rdsub(x.sup, x.inf)
+        return answer
+
 
     #math functions
     class math:
