@@ -299,6 +299,12 @@ class interval:
         else:
             return False
 
+    def proper_subset(x, y):
+        if interval.subset(x, y) and (y.inf < x.inf or x.sup < y.sup):
+            return True
+        else:
+            return False
+
 
     #math functions
     class math:
