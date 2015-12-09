@@ -323,6 +323,16 @@ class interval:
         else:
             return False
 
+    def norm(x):
+        if x.inf >= 0.:
+            return x.sup
+        if x.sup <= 0.:
+            return -x.inf
+        tmp = -x.inf
+        if x.sup > tmp:
+            tmp = x.sup
+        return tmp
+
 
     #math functions
     class math:
