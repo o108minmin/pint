@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .core import roundmode,roundfloat
+from .core import roundmode
+from .core import roundfloat as rf
 import math
 
 class interval:
@@ -23,11 +24,11 @@ class interval:
         answer = interval(0.)
         if (arg.__class__.__name__ == 'int' or
                 arg.__class__.__name__ == 'float'):
-            answer.inf = roundfloat.rdadd(self.inf, arg, roundmode.down)
-            answer.sup = roundfloat.rdadd(self.sup, arg, roundmode.up)
+            answer.inf = rf.rdadd(self.inf, arg, roundmode.down)
+            answer.sup = rf.rdadd(self.sup, arg, roundmode.up)
         elif arg.__class__.__name__ == 'interval':
-            answer.inf = roundfloat.rdadd(self.inf, arg.inf, roundmode.down)
-            answer.sup = roundfloat.rdadd(self.sup, arg.sup, roundmode.up)
+            answer.inf = rf.rdadd(self.inf, arg.inf, roundmode.down)
+            answer.sup = rf.rdadd(self.sup, arg.sup, roundmode.up)
         return answer
 
     def __iadd__(self, arg):
@@ -41,11 +42,11 @@ class interval:
         if (
                 arg.__class__.__name__ == 'int' or
                 arg.__class__.__name__ == 'float'):
-            answer.inf = roundfloat.rdsub(self.inf, arg, roundmode.down)
-            answer.sup = roundfloat.rdsub(self.sup, arg, roundmode.up)
+            answer.inf = rf.rdsub(self.inf, arg, roundmode.down)
+            answer.sup = rf.rdsub(self.sup, arg, roundmode.up)
         elif arg.__class__.__name__ == 'interval':
-            answer.inf = roundfloat.rdsub(self.inf, arg.sup, roundmode.down)
-            answer.sup = roundfloat.rdsub(self.sup, arg.inf, roundmode.up)
+            answer.inf = rf.rdsub(self.inf, arg.sup, roundmode.down)
+            answer.sup = rf.rdsub(self.sup, arg.inf, roundmode.up)
         return answer
 
     def __isub__(self, arg):
@@ -60,26 +61,26 @@ class interval:
                 arg.__class__.__name__ == 'int' or
                 arg.__class__.__name__ == 'float'):
             if arg >= 0.:
-                answer.inf = roundfloat.rdmul(self.inf, arg, roundmode.down)
-                answer.sup = roundfloat.rdmul(self.sup, arg, roundmode.up)
+                answer.inf = rf.rdmul(self.inf, arg, roundmode.down)
+                answer.sup = rf.rdmul(self.sup, arg, roundmode.up)
             else:
-                answer.inf = roundfloat.rdmul(self.sup, arg, roundmode.down)
-                answer.sup = roundfloat.rdmul(self.inf, arg, roundmode.up)
+                answer.inf = rf.rdmul(self.sup, arg, roundmode.down)
+                answer.sup = rf.rdmul(self.inf, arg, roundmode.up)
         elif arg.__class__.__name__ == 'interval':
             if self.inf >= 0.:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.inf, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
             elif arg.sup <= 0.:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.sup, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
             else:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.sup, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
         return answer
 
@@ -95,46 +96,46 @@ class interval:
                 arg.__class__.__name__ == 'int' or
                 arg.__class__.__name__ == 'float'):
             if arg > 0.:
-                answer.inf = roundfloat.rddiv(self.inf, arg, roundmode.down)
-                answer.sup = roundfloat.rddiv(self.sup, arg, roundmode.up)
+                answer.inf = rf.rddiv(self.inf, arg, roundmode.down)
+                answer.sup = rf.rddiv(self.sup, arg, roundmode.up)
             elif arg < 0.:
-                answer.inf = roundfloat.rddiv(self.sup, arg, roundmode.down)
-                answer.sup = roundfloat.rddiv(self.inf, arg, roundmode.up)
+                answer.inf = rf.rddiv(self.sup, arg, roundmode.down)
+                answer.sup = rf.rddiv(self.inf, arg, roundmode.up)
             else:
                 # TODO: nice error message
                 print("error")
         elif arg.__class__.__name__ == 'interval':
             if arg.inf > 0.:
                 if self.inf >= 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.inf, roundmode.up)
                 elif arg.sup < 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.sup, roundmode.up)
                 else:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.inf, roundmode.up)
             elif arg.sup < 0.:
                 if self.inf >= 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.inf, roundmode.up)
                 elif self.sup < 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.sup, roundmode.up)
                 else:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.sup, roundmode.up)
             else:
                 pass
@@ -159,11 +160,11 @@ class interval:
         answer = interval(0.)
         if (arg.__class__.__name__ == 'int' or
             arg.__class__.__name__ == 'float'):
-            answer.inf = roundfloat.rdsub(self.inf, arg, roundmode.down)
-            answer.sup = roundfloat.rdsub(self.sup, arg, roundmode.up)
+            answer.inf = rf.rdsub(self.inf, arg, roundmode.down)
+            answer.sup = rf.rdsub(self.sup, arg, roundmode.up)
         elif arg.__class__.__name__ == 'interval':
-            answer.inf = roundfloat.rdsub(self.inf, arg.sup, roundmode.down)
-            answer.sup = roundfloat.rdsub(self.sup, arg.inf, roundmode.up)
+            answer.inf = rf.rdsub(self.inf, arg.sup, roundmode.down)
+            answer.sup = rf.rdsub(self.sup, arg.inf, roundmode.up)
         return answer
 
     def __isub__(self, arg):
@@ -176,26 +177,26 @@ class interval:
         answer = interval(0.)
         if arg.__class__.__name__ == 'int' or arg.__class__.__name__ == 'float':
             if arg >= 0.:
-                answer.inf = roundfloat.rdmul(self.inf, arg, roundmode.down)
-                answer.sup = roundfloat.rdmul(self.sup, arg, roundmode.up)
+                answer.inf = rf.rdmul(self.inf, arg, roundmode.down)
+                answer.sup = rf.rdmul(self.sup, arg, roundmode.up)
             else:
-                answer.inf = roundfloat.rdmul(self.sup, arg, roundmode.down)
-                answer.sup = roundfloat.rdmul(self.inf, arg, roundmode.up)
+                answer.inf = rf.rdmul(self.sup, arg, roundmode.down)
+                answer.sup = rf.rdmul(self.inf, arg, roundmode.up)
         elif arg.__class__.__name__ == 'interval':
             if self.inf >= 0.:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.inf, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
             elif arg.sup <= 0.:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.sup, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
             else:
-                answer.inf = roundfloat.rdmul(
+                answer.inf = rf.rdmul(
                     self.sup, arg.inf, roundmode.down)
-                answer.sup = roundfloat.rdmul(
+                answer.sup = rf.rdmul(
                     self.sup, arg.sup, roundmode.up)
         return answer
 
@@ -209,46 +210,46 @@ class interval:
         answer = interval(0.)
         if arg.__class__.__name__ == 'int' or arg.__class__.__name__ == 'float':
             if arg > 0.:
-                answer.inf = roundfloat.rddiv(self.inf, arg, roundmode.down)
-                answer.sup = roundfloat.rddiv(self.sup, arg, roundmode.up)
+                answer.inf = rf.rddiv(self.inf, arg, roundmode.down)
+                answer.sup = rf.rddiv(self.sup, arg, roundmode.up)
             elif arg < 0.:
-                answer.inf = roundfloat.rddiv(self.sup, arg, roundmode.down)
-                answer.sup = roundfloat.rddiv(self.inf, arg, roundmode.up)
+                answer.inf = rf.rddiv(self.sup, arg, roundmode.down)
+                answer.sup = rf.rddiv(self.inf, arg, roundmode.up)
             else:
                 # TODO: nice error message
                 print("error")
         elif arg.__class__.__name__ == 'interval':
             if arg.inf > 0.:
                 if self.inf >= 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.inf, roundmode.up)
                 elif arg.sup < 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.sup, roundmode.up)
                 else:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.inf, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.sup, arg.inf, roundmode.up)
             elif arg.sup < 0.:
                 if self.inf >= 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.inf, roundmode.up)
                 elif self.sup < 0.:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.inf, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.sup, roundmode.up)
                 else:
-                    answer.inf = roundfloat.rddiv(
+                    answer.inf = rf.rddiv(
                         self.sup, arg.sup, roundmode.down)
-                    answer.sup = roundfloat.rddiv(
+                    answer.sup = rf.rddiv(
                         self.inf, arg.sup, roundmode.up)
             else:
                 pass
@@ -295,15 +296,15 @@ class interval:
     #math functions
     class math:
         def e():
-            return interval(math.e, roundfloat.succ(math.e))
+            return interval(math.e, rf.succ(math.e))
 
         def pi():
-            return interval(math.pi, roundfloat.succ(math.pi))
+            return interval(math.pi, rf.succ(math.pi))
 
         def sqrt(arg):
             answer = interval(0.)
-            answer.inf = roundfloat.rdsqrt(arg.inf, roundmode.down)
-            answer.sup = roundfloat.rdsqrt(arg.sup, roundmode.up)
+            answer.inf = rf.rdsqrt(arg.inf, roundmode.down)
+            answer.sup = rf.rdsqrt(arg.sup, roundmode.up)
             return answer
 
         def fabs(arg):
@@ -347,7 +348,7 @@ class interval:
             return answer
 
         def exp(x):
-            return interval(roundfloat.pred(math.exp(x.inf)), roundfloat.succ(math.exp(x.sup)))
+            return interval(rf.pred(math.exp(x.inf)), rf.succ(math.exp(x.sup)))
 
         #TODO: Fix lazy expm1 (significant loss of precision)
         def expm1(x):
@@ -358,10 +359,10 @@ class interval:
 
         #TODO: Fix log, log2 and log10 for x(double)
         def log(x):
-            return interval(roundfloat.pred(math.log(x.inf)), roundfloat.succ(math.log(x.sup)))
+            return interval(rf.pred(math.log(x.inf)), rf.succ(math.log(x.sup)))
 
         def log2(x):
-            return interval(roundfloat.pred(math.log2(x.inf)), roundfloat.succ(math.log(x.sup)))
+            return interval(rf.pred(math.log2(x.inf)), rf.succ(math.log(x.sup)))
 
         def log10(x):
-            return interval(roundfloat.pred(math.log10(x.inf)),roundfloat.succ(math.log10(x.sup)))
+            return interval(rf.pred(math.log10(x.inf)), rf.succ(math.log10(x.sup)))
