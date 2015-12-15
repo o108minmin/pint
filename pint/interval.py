@@ -305,6 +305,12 @@ class interval:
         else:
             return False
 
+    def number_in(x, number):
+        if x.inf < number and number < x.sup:
+            return True
+        else:
+            return False
+
     def zero_in(x):
         if x.inf < 0. and 0. < x.sup:
             return True
