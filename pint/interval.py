@@ -340,6 +340,12 @@ class interval:
         answer = rf.rdsub(x.sup, x.inf)
         return answer
 
+    def mid(x):
+        if math.fabs(x.inf) > 1. and math.fabs(x.sup) > 1.:
+            return x.inf * 0.5 + x.sup * 0.5
+        else:
+            return (x.inf + x.sup) * 0.5
+
 
     #math functions
     class math:
