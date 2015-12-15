@@ -346,6 +346,8 @@ class interval:
         else:
             return (x.inf + x.sup) * 0.5
 
+    def median(x):
+        return mid(x)
 
     #math functions
     class math:
