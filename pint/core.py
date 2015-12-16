@@ -90,7 +90,7 @@ class roundfloat:
                 if arg1 == -float('inf') or arg2 == -float('inf'):
                     return x
                 else:
-                    return -__sys__.float_info.max
+                    return -float_info.max
             if y > 0:
                 x = roundfloat.succ(x)
         elif rmode == roundmode.down:
@@ -98,7 +98,7 @@ class roundfloat:
                 if arg1 == float('inf') or arg2 == float('inf'):
                     return x
                 else:
-                    return __sys__.float_info.max
+                    return float_info.max
             elif x == -float('inf'):
                 return x
             if y < 0:
@@ -116,19 +116,19 @@ class roundfloat:
             if x == float('inf'):
                 return x
             elif x == -float('inf'):
-                if abs(arg1) == float('inf') or abs(arg2) == float('inf'):
+                if math.fabs(arg1) == float('inf') or math.fabs(arg2) == float('inf'):
                     return x
                 else:
-                    return -sys.float_info.max
+                    return -float_info.max
             if abs(x) >= 2.**(-969):
                 if y > 0:
                     x = roundfloat.succ(x)
         elif rmode == roundmode.down:
             if x == float('inf'):
-                if abs(arg1) == float('inf') or abs(arg2) == float('inf'):
+                if math.fabs(arg1) == float('inf') or math.fabs(arg2) == float('inf'):
                     return x
                 else:
-                    return __sys__.float_info.max
+                    return float_info.max
             elif x == -float('inf'):
                 return x
 
@@ -148,7 +148,7 @@ class roundfloat:
         if rmode == roundmode.up:
             pass
             if (arg1 == 0. or arg2 == 0. or
-            abs(arg1) == float('inf') or abs(arg2) == float('inf') or
+            math.fabs(arg1) == float('inf') or math.fabs(arg2) == float('inf') or
             arg1 != arg1 or arg2 != arg2):
                 return arg1 / arg2
             if arg2 < 0.:
@@ -170,7 +170,7 @@ class roundfloat:
             if d == float('inf'):
                 return d
             elif d == -float('inf'):
-                return -__sys__.float_info.max
+                return -float_info.max
 
             x, y = roundfloat.twoproduct(d, arg2fix)
             if x < arg1fix or (x == arg1fix and y < 0.):
@@ -198,7 +198,7 @@ class roundfloat:
                         return 0
             d = arg1fix / arg2fix
             if d == float('inf'):
-                return __sys__.float_info.max
+                return float_info.max
             elif d == -float('inf'):
                 return d
             x, y = roundfloat.twoproduct(d, arg2fix)

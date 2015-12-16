@@ -3,6 +3,7 @@
 from .core import roundmode
 from .core import roundfloat as rf
 import math
+import sys
 
 class interval:
     inf = 0.
@@ -340,7 +341,7 @@ class interval:
         return tmp
 
     def mag(x):
-        return norm(x)
+        return interval.norm(x)
 
     def width(x):
         answer = rf.rdsub(x.sup, x.inf)
@@ -354,6 +355,15 @@ class interval:
 
     def median(x):
         return mid(x)
+
+    def intersect(x, y):
+        tmp1 = x.inf
+        if y.inf > tmp1:
+            tmp1 = y.inf
+        tmp2 = x.sup
+        if y.sup < tmp2:
+            tmp2 = y.sup
+        return interval(tmp1, tmp2)
 
     #math functions
     class math:
