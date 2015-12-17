@@ -277,6 +277,79 @@ class interval:
     def __pow__(a, b):
         return interval.math.pow(a, b)
 
+    def __lt__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return a.sup < b.inf
+            else:
+                return a.sup < b
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return a < b.inf
+            else:
+                return a < b
+
+    def __le__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return a.sup <= b.inf
+            else:
+                return a.sup <= b
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return a <= b.inf
+            else:
+                return a <= b
+
+    def __eq__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return a.sup == b.inf and b.inf == b.sup
+            else:
+                return a.sup == a.inf and a.sup == b
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return b.sup == b.inf and b.sup == a
+            else:
+                return a == b
+        pass
+
+    def __ne__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return interval.overlap(a, b)
+            else:
+                return interval.overlap(a, interval(b))
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return interval.overlap(interval(a), b)
+            else:
+                return interval.overlap(interval(a), interval(b))
+
+    def __ge__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return a.inf >= b.sup
+            else:
+                return a.inf >= b
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return a >= b.sup
+            else:
+                return a >= b
+
+    def __gt__(a, b):
+        if a.__class__.__name__ == "interval":
+            if b.__class__.__name__ == "interval":
+                return a.inf > b.sup
+            else:
+                return a.inf > b
+        if a.__class__.__name__ == "float":
+            if b.__class__.__name__ == "interval":
+                return a > b.sup
+            else:
+                return a > b
+
     # interval tools
     def hull(a, b):
         if a.__class__.__name__ != "interval":
