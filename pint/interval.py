@@ -511,3 +511,139 @@ class interval:
 
         def log10(x):
             return interval(rf.pred(math.log10(x.inf)), rf.succ(math.log10(x.sup)))
+
+        def sin_origin(x):
+            r = interval(0.)
+            y = interval(1.)
+            i = 1
+            eps = sys.float_info.epsilon
+            while True:
+                intval_i = interval(i)
+                y = y * x
+                y = y / intval_i
+                if interval.mag(y) < eps:
+                    r += y * interval(-1., 1.)
+                    break
+                else:
+                    if i % 2 != 0:
+                        if i % 4 == 1:
+                            r += y
+                        else:
+                            r -= y
+                i = i + 1
+            return r
+
+        def sin_point(x):
+            intval_pi = interval.math.pi()
+            mid_pi = interval.mid(intval_pi)
+            if x.inf >= mid_pi:
+                print(x)
+                return interval.math.sin_point(x - (intval_pi * 2.))
+            if x.sup <= -mid_pi * 0.75:
+                return -interval.math.sin_origin(x + intval_pi)
+            if x.sup <= -mid_pi * 0.5:
+                return -interval.math.cos_origin(-intval_pi * 0.5 - x)
+            if x.sup <= -mid_pi * 0.25:
+                return -interval.math.cos_origin(x + intval_pi * 0.5)
+            if x.sup <= 0.:
+                return -interval.math.sin_origin(-x)
+            if x.sup <= mid_pi * 0.25:
+                return interval.math.sin_origin(x)
+            if x.sup <= mid_pi * 0.5:
+                return interval.math.cos_origin(intval_pi * 0.5 -x)
+            if x.sup <= mid_pi * 0.75:
+                return interval.math.cos_origin(x - intval_pi * 0.5)
+            return interval.math.sin_origin(intval_pi - x)
+
+        def sin(x):
+            intval_pi = interval.math.pi()
+            intval_pi2 = intval_pi * 2.
+            if interval.math.isinf(x) == True:
+                return interval.hull(-1., 1.)
+            # x is normalized to -pi < x < pi
+            x_normalized = x
+            while x_normalized.inf <= -intval_pi.sup or x_normalized.inf >= intval_pi.sup:
+                n = math.floor((x_normalized.inf / intval_pi2.inf) + 0.5)
+                x_normalized = x_normalized - n * intval_pi2
+            if math.fabs(rf.rdsub(x.sup, x.inf, roundmode.down)) > intval_pi2.sup:
+                return interval(-1., 1.)
+            tmp1 = interval.math.sin_point(interval(x_normalized.inf))
+            tmp2 = interval.math.sin_point(interval(x_normalized.sup))
+            r = interval.hull(tmp1, tmp2)
+            if interval.subset(intval_pi * 0.5, x_normalized):
+                r = interval.hull(r, 1.)
+            if interval.subset(intval_pi * 2.5, x_normalized):
+                r = interval.hull(r, -1.)
+            if interval.subset(-intval_pi * 0.5, x_normalized):
+                r = interval.hull(r, -1)
+            if interval.subset(intval_pi * 1.5, x_normalized):
+                r = interval.hull(r, -1)
+            return interval.intersect(r, interval(-1, 1))
+
+        def cos_origin(x):
+            r = interval(1.)
+            y = interval(1.)
+            i = 1
+            eps = sys.float_info.epsilon
+            while True:
+                intval_i = interval(i)
+                y = y * x
+                y = y / intval_i
+                if interval.mag(y) < eps:
+                    r = r + y * interval(-1., 1.)
+                    break
+                else:
+                    if i % 2 == 0:
+                        if i % 4 == 0:
+                            r = r + y
+                        else:
+                            r = r - y
+                i = i + 1
+            return r
+
+        def cos_point(x):
+            intval_pi = interval.math.pi()
+            mid_pi = interval.mid(intval_pi)
+            if x.inf >= mid_pi:
+                return interval.math.cos_point(x - intval_pi * 2.)
+            if x.sup <= -mid_pi * 0.75:
+                return -interval.math.cos_origin(x + intval_pi)
+            if x.sup <= -mid_pi * 0.5:
+                return -interval.math.sin_origin(-intval_pi * 0.5 - x)
+            if x.sup <= -mid_pi * 0.25:
+                return interval.math.sin_origin(x + intval_i * 0.5)
+            if x.sup <= 0.:
+                return interval.math.cos_origin(-x)
+            if x.sup <= mid_pi * 0.25:
+                return interval.math.cos_origin(x)
+            if x.sup <= mid_pi * 0.5:
+                return interval.math.sin_origin(intval_pi * 0.5 - x)
+            if x.sup <= mid_pi * 0.75:
+                return -interval.math.sin_origin(x - intval_pi * 0.5)
+            return -interval.math.cos_origin(intval_pi - x)
+
+        def cos(x):
+            intval_pi = interval.math.pi()
+            intval_pi2 = intval_pi * 2.
+            if interval.math.isinf(x) == True:
+                return interval.hull(-1, 1)
+            x_normalized = x
+            while x_normalized <= -intval_pi.inf or x_normalized >= intval_pi.sup:
+                n = math.floor((x_normalized.inf / intval_pi2.inf) + 0.5)
+                x_normalized -= n * intval_pi2
+            if math.fabs(rf.rdsub(x.sup, x.inf, roundmode.down)) > intval_pi2.sup:
+                return interval(-1., 1.)
+            tmp1 = interval.math.cos_point(interval(x_normalized.inf))
+            tmp2 = interval.math.cos_point(interval(x_normalized.sup))
+            r = interval.hull(tmp1, tmp2)
+            if interval.zero_in(r):
+                r = interval.hull(r, 1.)
+            if interval.subset(intval_pi2, x_normalized):
+                r = interval.hull(r, 1.)
+            if interval.subset(-intval_pi, x_normalized):
+                r = interval.hull(r, -1.)
+            if interval.subset(intval_pi, x_normalized):
+                r = interval.hull(r, -1.)
+            if interval.subset(intval_pi * 3., x_normalized):
+                r = interval.hull(r, -1.)
+            return interval.intersect(r, interval(-1., 1.))
