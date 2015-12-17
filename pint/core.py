@@ -106,7 +106,7 @@ class roundfloat:
         return x
 
     def rdsub(a, b, rmode=roundmode.nearest):
-        return roundfloat.rdadd(a, b, rmode)
+        return roundfloat.rdadd(a, -b, rmode)
 
     def rdmul(a, b, rmode=roundmode.nearest):
         arg1 = float(a)
