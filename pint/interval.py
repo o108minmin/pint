@@ -706,21 +706,22 @@ class interval:
         def atan_point(x):
             intval_pi = interval.math.pi()
             intval_x = interval(x)
-            if x < -interval.math.sqrt(2.).inf + 1.:
-                return -intval_pi * 0.5 - atan_origin(1. / intval_x)
-            if x < -interval.math.sqrt(2.).inf - 1.:
+            if x < -math.sqrt(2.) + 1.:
+                t1 = 1. / intval_x
+                return -intval_pi * 0.5 - interval.math.atan_origin(t1)
+            if x < -math.sqrt(2.) - 1.:
                 t1 = 1. + intval_x
                 t2 = 1. - intval_x
-                return -intval_pi * 0.25 + atan_origin(t1 / t2)
-            if x < interval.math.sqrt(2.) - 1.:
+                return -intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
+            if x < math.sqrt(2.) - 1.:
                 return interval.math.atan_origin(intval_x)
-            if x < interval.math.sqrt(2.) + 1.:
+            if x < math.sqrt(2.) + 1.:
                 t1 = intval_x - 1.
                 t2 = intval_x + 1.
                 return intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
-            return intval_pi * 0.5 - atan_origin(1. / intval_x)
+            return intval_pi * 0.5 - interval.mathatan_origin(1. / intval_x)
 
         def atan(x):
-            t1 = atan_point(x.inf)
-            t2 = atan_point(x.sup)
+            t1 = interval.math.atan_point(x.inf)
+            t2 = interval.math.atan_point(x.sup)
             return interval(t1.inf, t2.sup)
