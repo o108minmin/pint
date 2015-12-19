@@ -682,3 +682,45 @@ class interval:
             tmp1 = interval.math.tan_point(x_nor.inf)
             tmp2 = interval.math.tan_point(x_nor.sup)
             return interval(tmp1.inf, tmp2.sup)
+
+        def atan_origin(x):
+            r = interval(0.)
+            y = interval(1.)
+            i = 1
+            eps = sys.float_info.epsilon
+            while True:
+                y = y * x
+                tmp = y * interval(-1., 1.) / interval(i)
+                if interval.mag(tmp) < eps:
+                    r = r + tmp
+                    break
+                else:
+                    if i % 2 != 0:
+                        if i % 4 == 1:
+                            r = r + y / interval(i)
+                        else:
+                            r = r - y / interval(i)
+                i += 1
+            return r
+
+        def atan_point(x):
+            intval_pi = interval.math.pi()
+            intval_x = interval(x)
+            if x < -interval.math.sqrt(2.).inf + 1.:
+                return -intval_pi * 0.5 - atan_origin(1. / intval_x)
+            if x < -interval.math.sqrt(2.).inf - 1.:
+                t1 = 1. + intval_x
+                t2 = 1. - intval_x
+                return -intval_pi * 0.25 + atan_origin(t1 / t2)
+            if x < interval.math.sqrt(2.) - 1.:
+                return interval.math.atan_origin(intval_x)
+            if x < interval.math.sqrt(2.) + 1.:
+                t1 = intval_x - 1.
+                t2 = intval_x + 1.
+                return intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
+            return intval_pi * 0.5 - atan_origin(1. / intval_x)
+
+        def atan(x):
+            t1 = atan_point(x.inf)
+            t2 = atan_point(x.sup)
+            return interval(t1.inf, t2.sup)
