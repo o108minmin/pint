@@ -147,124 +147,19 @@ class interval:
         return interval.__truediv__(self, arg)
 
     def __rtruediv__(self, arg):
-        return interval.__truediv__(self, arg)
-
-    def __str__(self):
-        return '[' + str(self.inf) + ',' + str(self.sup) + ']'
-
-    def __repr__(self):
-        return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
-
-    def __radd__(self, arg):
-        return interval.__add__(self, arg)
-
-    def __sub__(self, arg):
+        # arg / self(interval)
         answer = interval(0.)
-        if (arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
-            answer.inf = rf.rdsub(self.inf, arg, rdm.down)
-            answer.sup = rf.rdsub(self.sup, arg, rdm.up)
-        elif arg.__class__.__name__ == 'interval':
-            answer.inf = rf.rdsub(self.inf, arg.sup, rdm.down)
-            answer.sup = rf.rdsub(self.sup, arg.inf, rdm.up)
-        return answer
-
-    def __isub__(self, arg):
-        return interval.__sub__(self, arg)
-
-    def __rsub__(self, arg):
-        return interval.__sub__(self, arg)
-
-    def __mul__(self, arg):
-        answer = interval(0.)
-        arg_name = arg.__class__.__name__
-        if arg_name == 'int' or arg_name == 'float':
+        if self.inf > 0. or self.sup < 0.:
             if arg >= 0.:
-                answer.inf = rf.rdmul(self.inf, arg, rdm.down)
-                answer.sup = rf.rdmul(self.sup, arg, rdm.up)
+                answer.inf = rf.rddiv(arg, self.sup, rdm.down)
+                answer.sup = rf.rddiv(arg, self.inf, rdm.up)
             else:
-                answer.inf = rf.rdmul(self.sup, arg, rdm.down)
-                answer.sup = rf.rdmul(self.inf, arg, rdm.up)
-        elif arg.__class__.__name__ == 'interval':
-            if self.inf >= 0.:
-                answer.inf = rf.rdmul(
-                    self.inf, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
-            elif arg.sup <= 0.:
-                answer.inf = rf.rdmul(
-                    self.sup, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
-            else:
-                answer.inf = rf.rdmul(
-                    self.sup, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
+                answer.inf = rf.rddiv(arg, self.inf, rmd.down)
+                answer.sup = rf.rddiv(arg, self.sup, rmd.up)
+        else:
+            # TODO: nice error message
+            print("error")
         return answer
-
-    def __imul__(self, arg):
-        return interval.__mul__(self, arg)
-
-    def __rmul__(self, arg):
-        return interval.__mul__(self, arg)
-
-    def __truediv__(self, arg):
-        answer = interval(0.)
-        if (
-                arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
-            if arg > 0.:
-                answer.inf = rf.rddiv(self.inf, arg, rdm.down)
-                answer.sup = rf.rddiv(self.sup, arg, rdm.up)
-            elif arg < 0.:
-                answer.inf = rf.rddiv(self.sup, arg, rdm.down)
-                answer.sup = rf.rddiv(self.inf, arg, rdm.up)
-            else:
-                # TODO: nice error message
-                print("error")
-        elif arg.__class__.__name__ == 'interval':
-            if arg.inf > 0.:
-                if self.inf >= 0.:
-                    answer.inf = rf.rddiv(
-                        self.inf, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.sup, arg.inf, rdm.up)
-                elif arg.sup < 0.:
-                    answer.inf = rf.rddiv(
-                        self.inf, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.sup, arg.sup, rdm.up)
-                else:
-                    answer.inf = rf.rddiv(
-                        self.inf, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.sup, arg.inf, rdm.up)
-            elif arg.sup < 0.:
-                if self.inf >= 0.:
-                    answer.inf = rf.rddiv(
-                        self.sup, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.inf, arg.inf, rdm.up)
-                elif self.sup < 0.:
-                    answer.inf = rf.rddiv(
-                        self.sup, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.inf, arg.sup, rdm.up)
-                else:
-                    answer.inf = rf.rddiv(
-                        self.sup, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
-                        self.inf, arg.sup, rdm.up)
-            else:
-                pass
-        return answer
-
-    def __itruediv__(self, arg):
-        return interval.__truediv__(self, arg)
-
-    def __rtruediv__(self, arg):
-        return interval.__truediv__(self, arg)
 
     def __str__(self):
         return '[' + str(self.inf) + ',' + str(self.sup) + ']'
@@ -725,3 +620,5 @@ class interval:
             t1 = interval.math.atan_point(x.inf)
             t2 = interval.math.atan_point(x.sup)
             return interval(t1.inf, t2.sup)
+
+
