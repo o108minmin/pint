@@ -19,21 +19,21 @@ class roundfloat:
 
     # succ and pred by S. M. Rump:
     def succ(a):
-        absa = abs(a)
-        if absa >= 2.**(-969):
-            return a + absa * (2.**(-53) + 2.**(-105))
-        if absa < 2.**(-1021):
-            return a + absa * 2.**(-1074)
+        abs_a = abs(a)
+        if abs_a >= 2.**(-969):
+            return a + abs_a * (2.**(-53) + 2.**(-105))
+        if abs_a < 2.**(-1021):
+            return a + abs_a * 2.**(-1074)
         c = 2.**(53) * a
         e = (2.**(-53) + 2.**(-105)) * abs(c)
         return (c + e) * 2.**(-53)
 
     def pred(a):
-        absa = abs(a)
-        if absa >= 2.**(-969):
-            return a - absa * (2.**(-53) + 2.**(-105))
-        if absa < 2.**(-1021):
-            return a - absa * 2.**(-1074)
+        abs_a = abs(a)
+        if abs_a >= 2.**(-969):
+            return a - abs_a * (2.**(-53) + 2.**(-105))
+        if abs_a < 2.**(-1021):
+            return a - abs_a * 2.**(-1074)
         c = 2.**(53) * a
         e = (2.**(-53) + 2.**(-105)) * abs(c)
         return (c - e) * 2.**(-53)
@@ -80,8 +80,8 @@ class roundfloat:
         return x, y
 
     def rdadd(a, b, rmode=roundmode.nearest):
-        arg1 = float(a)
-        arg2 = float(b)
+        arg1 = a
+        arg2 = b
         x, y = roundfloat.twosum(arg1, arg2)
         if rmode == roundmode.up:
             if x == float('inf'):
@@ -109,8 +109,8 @@ class roundfloat:
         return roundfloat.rdadd(a, -b, rmode)
 
     def rdmul(a, b, rmode=roundmode.nearest):
-        arg1 = float(a)
-        arg2 = float(b)
+        arg1 = a
+        arg2 = b
         x, y = roundfloat.twoproduct(arg1, arg2)
         if rmode == roundmode.up:
             if x == float('inf'):
@@ -143,8 +143,8 @@ class roundfloat:
         return x
 
     def rddiv(a, b, rmode=roundmode.nearest):
-        arg1 = float(a)
-        arg2 = float(b)
+        arg1 = a
+        arg2 = b
         if rmode == roundmode.up:
             pass
             if (arg1 == 0. or arg2 == 0. or
@@ -207,7 +207,7 @@ class roundfloat:
             return d
 
     def rdsqrt(x, rmode=roundmode.nearest):
-        arg = float(x)
+        arg = x
         d = math.sqrt(arg)
         if rmode == roundmode.up:
             if arg < 2.**(-969):
