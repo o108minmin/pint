@@ -103,7 +103,7 @@ class interval:
             if arg >= 0.:
                 answer.inf = rf.rdmul(self.inf, arg, rdm.down)
                 answer.sup = rf.rdmul(self.sup, arg, rdm.up)
-            elif arg< 0.:
+            elif arg < 0.:
                 answer.inf = rf.rdmul(self.sup, arg, rdm.down)
                 answer.sup = rf.rdmul(self.inf, arg, rdm.up)
             else:
@@ -644,4 +644,34 @@ class interval:
         def atan(x):
             t1 = interval.math.atan_point(x.inf)
             t2 = interval.math.atan_point(x.sup)
+            return interval(t1.inf, t2.sup)
+
+        def asin_point(x):
+            intval_pi = interval.math.pi()
+            intval_pih = intval_pi * 0.5
+            if x < -1. or x > 1.:
+                # TODO: nice erroe message
+                return "error"
+            if x == 1.:
+                return intval_pih
+            if x == -1.:
+                return -intval_pih
+            if math.fabs(x) < math.sqrt(6.) / 3.:
+                t1 = interval(x) * x
+                return interval.math.atan(x / interval.math.sqrt(1. - t1))
+            else:
+                if x > 0.:
+                    t1 = 1. - x
+                    t2 = 1. + interval(x)
+                    return interval.math.atan(x / interval.math.sqrt(t1 * t2))
+                else:
+                    t1 = 1. + x
+                    t2 = 1. - interval(x)
+                    return interval.math.atan(x / interval.math(t1 * t2))
+
+        def asin(x):
+            t1 = interval.math.asin_point(x.inf)
+            t2 = interval.math.asin_point(x.sup)
+            print(t1)
+            print(t2)
             return interval(t1.inf, t2.sup)
