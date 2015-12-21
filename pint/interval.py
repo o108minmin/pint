@@ -55,35 +55,60 @@ class interval:
         return interval.__sub__(self, arg)
 
     def __rsub__(self, arg):
-        return interval.__sub__(self, arg)
+        return interval.__add__(-self, arg)
 
     def __mul__(self, arg):
         answer = interval(0.)
-        if (
-                arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
+        if arg.__class__.__name__ == 'interval':
+            if interval.zero_in(arg) == True:
+                if interval.zero_in(self) == True:
+                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    tmp = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    if answer.inf > tmp:
+                        answer.inf = tmp
+                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                    tmp = rf.rdmul(self.sup, arg.sup, rdm.up)
+                    if answer.sup < tmp:
+                        answer.sup = tmp
+                elif self.inf >= 0.:
+                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                elif self.sup <= 0.:
+                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+            elif arg.inf >= 0.:
+                if interval.zero_in(self) == True:
+                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                elif self.inf >= 0.:
+                    answer.inf = rf.rdmul(self.inf, arg.inf, rdm.down)
+                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                elif self.sup <= 0.:
+                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    answer.sup = rf.rdmul(self.sup, arg.inf, rdm.up)
+            elif arg.sup <= 0.:
+                if interval.zero_in(self) == True:
+                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                elif self.inf >= 0.:
+                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    answer.sup = rf.rdmul(self.inf, arg.sup, rdm.up)
+                elif self.sup <= 0.:
+                    answer.inf = rf.rdmul(self.sup, arg.sup, rdm.down)
+                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+            else:
+                # TODO: nice error message
+                print("error")
+        else:
             if arg >= 0.:
                 answer.inf = rf.rdmul(self.inf, arg, rdm.down)
                 answer.sup = rf.rdmul(self.sup, arg, rdm.up)
-            else:
+            elif arg< 0.:
                 answer.inf = rf.rdmul(self.sup, arg, rdm.down)
                 answer.sup = rf.rdmul(self.inf, arg, rdm.up)
-        elif arg.__class__.__name__ == 'interval':
-            if self.inf >= 0.:
-                answer.inf = rf.rdmul(
-                    self.inf, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
-            elif arg.sup <= 0.:
-                answer.inf = rf.rdmul(
-                    self.sup, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
             else:
-                answer.inf = rf.rdmul(
-                    self.sup, arg.inf, rdm.down)
-                answer.sup = rf.rdmul(
-                    self.sup, arg.sup, rdm.up)
+                # TODO: nice error message
+                print("error")
         return answer
 
     def __imul__(self, arg):
@@ -581,44 +606,42 @@ class interval:
         def atan_origin(x):
             r = interval(0.)
             y = interval(1.)
-            i = 1
+            i = 1.
             eps = sys.float_info.epsilon
             while True:
                 y = y * x
-                tmp = y * interval(-1., 1.) / interval(i)
+                tmp = y * interval(-1., 1.) / float(i)
                 if interval.mag(tmp) < eps:
                     r = r + tmp
                     break
                 else:
                     if i % 2 != 0:
                         if i % 4 == 1:
-                            r = r + y / interval(i)
+                            r = r + y / float(i)
                         else:
-                            r = r - y / interval(i)
-                i += 1
+                            r = r - y / float(i)
+                i += 1.
             return r
 
         def atan_point(x):
             intval_pi = interval.math.pi()
             intval_x = interval(x)
-            if x < -math.sqrt(2.) + 1.:
+            if x < -(math.sqrt(2.) + 1.):
                 t1 = 1. / intval_x
                 return -intval_pi * 0.5 - interval.math.atan_origin(t1)
-            if x < -math.sqrt(2.) - 1.:
+            if x < -(math.sqrt(2.) - 1.):
                 t1 = 1. + intval_x
                 t2 = 1. - intval_x
                 return -intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
-            if x < math.sqrt(2.) - 1.:
+            if x < (math.sqrt(2.) - 1.):
                 return interval.math.atan_origin(intval_x)
-            if x < math.sqrt(2.) + 1.:
+            if x < (math.sqrt(2.) + 1.):
                 t1 = intval_x - 1.
                 t2 = intval_x + 1.
                 return intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
-            return intval_pi * 0.5 - interval.mathatan_origin(1. / intval_x)
+            return intval_pi * 0.5 - interval.math.atan_origin(1. / intval_x)
 
         def atan(x):
             t1 = interval.math.atan_point(x.inf)
             t2 = interval.math.atan_point(x.sup)
             return interval(t1.inf, t2.sup)
-
-
