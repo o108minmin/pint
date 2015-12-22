@@ -67,16 +67,12 @@ class roundfloat:
         else:
             arg1fix = arg1
             arg2fix = arg2
-        arg1SplitUp, arg1SplitDown = roundfloat.split(arg1fix)
-        arg2SplitUp, arg2SplitDown = roundfloat.split(arg2fix)
+        aH, aL = roundfloat.split(arg1fix)
+        bH, bL = roundfloat.split(arg2fix)
         if abs(x) > 2.**1023:
-            y = arg1SplitDown * arg2SplitDown - \
-                ((((x * 0.5) - (arg1SplitUp * 0.5) * arg2SplitUp) * 2. -
-                  arg1SplitDown * arg2SplitUp) - arg1SplitUp * arg2SplitDown)
+            y = aL * bL - ((((x * 0.5) - (aH * 0.5) * bH) * 2. - aL * bH) - aH * bL)
         else:
-            y = arg1SplitDown * arg2SplitDown - \
-                (((x - arg1SplitUp * arg2SplitUp) - arg1SplitDown *
-                  arg2SplitUp) - arg1SplitUp * arg2SplitDown)
+            y = aL * bL - (((x - aH * bH) - aL * bH) - aH * bL)
         return x, y
 
     def rdadd(a, b, rmode=roundmode.nearest):
