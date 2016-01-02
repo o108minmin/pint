@@ -672,6 +672,43 @@ class interval:
         def asin(x):
             t1 = interval.math.asin_point(x.inf)
             t2 = interval.math.asin_point(x.sup)
-            print(t1)
-            print(t2)
+            return interval(t1.inf, t2.sup)
+
+        def pih_m_atan_point(x):
+            intval_pi = interval.math.pi()
+            if x.inf < -(math.sqrt(2.) + 1.):
+                return intval_pi + interval.math.atan_origin(1. / x)
+            elif x.inf < -(math.sqrt(2.) - 1.):
+                tmp = (1. + x) / (1. - x)
+                return intval_pi * 0.75 - interval.math.atan_origin(tmp)
+            elif x.inf < math.sqrt(2.) - 1.:
+                return intval_pi * 0.5 - interval.math.atan_origin(x)
+            elif x.inf < math.sqrt(2.) + 1.:
+                tmp = (x - 1.) / (x + 1.)
+                return intval_pi * 0.25 - interval.math.atan_origin(tmp)
+            return interval.math.atan_origin(1. / x)
+
+        def acos_point(x):
+            intval_pi = interval.math.pi()
+            if x < -1. or x > 1.:
+                # TODO: nice erroe message
+                print("error")
+                return "error"
+            elif x == 1.:
+                return interval(0.)
+            elif x == -1.:
+                return intval_pi
+            if math.fabs(x) < math.sqrt(6.) / 3.:
+                tmp = interval.math.sqrt(1. - interval(x) * x)
+                return interval.math.pih_m_atan_point(x / tmp)
+            else:
+                if x > 0.:
+                    tmp = interval.math.sqrt(1. + interval(x) * (1. - x))
+                    return interval.math.pih_m_atan_point(x / tmp)
+                else:
+                    tmp = interval.math.sqrt((1. + x) * (1. - interval(x)))
+                    return interval.math.pih_m_atan_point(x / tmp)
+        def acos(x):
+            t1 = interval.math.acos_point(x.sup)
+            t2 = interval.math.acos_point(x.inf)
             return interval(t1.inf, t2.sup)
