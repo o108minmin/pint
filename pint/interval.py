@@ -451,9 +451,9 @@ class interval:
             i = 1
             eps = sys.float_info.epsilon
             while True:
-                intval_i = interval(i)
+                itv_i = interval(i)
                 y = y * x
-                y = y / intval_i
+                y = y / itv_i
                 if interval.mag(y) < eps:
                     r += y * interval(-1., 1.)
                     break
@@ -467,51 +467,51 @@ class interval:
             return r
 
         def sin_point(x):
-            intval_pi = interval.math.pi()
-            mid_pi = interval.mid(intval_pi)
+            itv_pi = interval.math.pi()
+            mid_pi = interval.mid(itv_pi)
             if x.inf >= mid_pi:
                 print(x)
-                return interval.math.sin_point(x - (intval_pi * 2.))
+                return interval.math.sin_point(x - (itv_pi * 2.))
             if x.sup <= -mid_pi * 0.75:
-                return -interval.math.sin_origin(x + intval_pi)
+                return -interval.math.sin_origin(x + itv_pi)
             if x.sup <= -mid_pi * 0.5:
-                return -interval.math.cos_origin(-intval_pi * 0.5 - x)
+                return -interval.math.cos_origin(-itv_pi * 0.5 - x)
             if x.sup <= -mid_pi * 0.25:
-                return -interval.math.cos_origin(x + intval_pi * 0.5)
+                return -interval.math.cos_origin(x + itv_pi * 0.5)
             if x.sup <= 0.:
                 return -interval.math.sin_origin(-x)
             if x.sup <= mid_pi * 0.25:
                 return interval.math.sin_origin(x)
             if x.sup <= mid_pi * 0.5:
-                return interval.math.cos_origin(intval_pi * 0.5 - x)
+                return interval.math.cos_origin(itv_pi * 0.5 - x)
             if x.sup <= mid_pi * 0.75:
-                return interval.math.cos_origin(x - intval_pi * 0.5)
-            return interval.math.sin_origin(intval_pi - x)
+                return interval.math.cos_origin(x - itv_pi * 0.5)
+            return interval.math.sin_origin(itv_pi - x)
 
         def sin(x):
-            intval_pi = interval.math.pi()
-            intval_pi2 = intval_pi * 2.
+            itv_pi = interval.math.pi()
+            itv_pi2 = itv_pi * 2.
             if interval.math.isinf(x) == True:
                 return interval.hull(-1., 1.)
             # x is normalized to -pi < x < pi
             x_nor = x
             while (
-                    x_nor.inf <= -intval_pi.sup or
-                    x_nor.inf >= intval_pi.sup):
-                n = math.floor((x_nor.inf / intval_pi2.inf) + 0.5)
-                x_nor = x_nor - n * intval_pi2
-            if math.fabs(rf.rdsub(x.sup, x.inf, rdm.down)) > intval_pi2.sup:
+                    x_nor.inf <= -itv_pi.sup or
+                    x_nor.inf >= itv_pi.sup):
+                n = math.floor((x_nor.inf / itv_pi2.inf) + 0.5)
+                x_nor = x_nor - n * itv_pi2
+            if math.fabs(rf.rdsub(x.sup, x.inf, rdm.down)) > itv_pi2.sup:
                 return interval(-1., 1.)
             tmp1 = interval.math.sin_point(interval(x_nor.inf))
             tmp2 = interval.math.sin_point(interval(x_nor.sup))
             r = interval.hull(tmp1, tmp2)
-            if interval.subset(intval_pi * 0.5, x_nor):
+            if interval.subset(itv_pi * 0.5, x_nor):
                 r = interval.hull(r, 1.)
-            if interval.subset(intval_pi * 2.5, x_nor):
+            if interval.subset(itv_pi * 2.5, x_nor):
                 r = interval.hull(r, -1.)
-            if interval.subset(-intval_pi * 0.5, x_nor):
+            if interval.subset(-itv_pi * 0.5, x_nor):
                 r = interval.hull(r, -1)
-            if interval.subset(intval_pi * 1.5, x_nor):
+            if interval.subset(itv_pi * 1.5, x_nor):
                 r = interval.hull(r, -1)
             return interval.intersect(r, interval(-1, 1))
 
@@ -521,9 +521,9 @@ class interval:
             i = 1
             eps = sys.float_info.epsilon
             while True:
-                intval_i = interval(i)
+                itv_i = interval(i)
                 y = y * x
-                y = y / intval_i
+                y = y / itv_i
                 if interval.mag(y) < eps:
                     r = r + y * interval(-1., 1.)
                     break
@@ -537,49 +537,49 @@ class interval:
             return r
 
         def cos_point(x):
-            intval_pi = interval.math.pi()
-            mid_pi = interval.mid(intval_pi)
+            itv_pi = interval.math.pi()
+            mid_pi = interval.mid(itv_pi)
             if x.inf >= mid_pi:
-                return interval.math.cos_point(x - intval_pi * 2.)
+                return interval.math.cos_point(x - itv_pi * 2.)
             if x.sup <= -mid_pi * 0.75:
-                return -interval.math.cos_origin(x + intval_pi)
+                return -interval.math.cos_origin(x + itv_pi)
             if x.sup <= -mid_pi * 0.5:
-                return -interval.math.sin_origin(-intval_pi * 0.5 - x)
+                return -interval.math.sin_origin(-itv_pi * 0.5 - x)
             if x.sup <= -mid_pi * 0.25:
-                return interval.math.sin_origin(x + intval_i * 0.5)
+                return interval.math.sin_origin(x + itv_i * 0.5)
             if x.sup <= 0.:
                 return interval.math.cos_origin(-x)
             if x.sup <= mid_pi * 0.25:
                 return interval.math.cos_origin(x)
             if x.sup <= mid_pi * 0.5:
-                return interval.math.sin_origin(intval_pi * 0.5 - x)
+                return interval.math.sin_origin(itv_pi * 0.5 - x)
             if x.sup <= mid_pi * 0.75:
-                return -interval.math.sin_origin(x - intval_pi * 0.5)
-            return -interval.math.cos_origin(intval_pi - x)
+                return -interval.math.sin_origin(x - itv_pi * 0.5)
+            return -interval.math.cos_origin(itv_pi - x)
 
         def cos(x):
-            intval_pi = interval.math.pi()
-            intval_pi2 = intval_pi * 2.
+            itv_pi = interval.math.pi()
+            itv_pi2 = itv_pi * 2.
             if interval.math.isinf(x) == True:
                 return interval.hull(-1, 1)
             x_nor = x
-            while x_nor <= -intval_pi.inf or x_nor >= intval_pi.sup:
-                n = math.floor((x_nor.inf / intval_pi2.inf) + 0.5)
-                x_nor -= n * intval_pi2
-            if math.fabs(rf.rdsub(x.sup, x.inf, rdm.down)) > intval_pi2.sup:
+            while x_nor <= -itv_pi.inf or x_nor >= itv_pi.sup:
+                n = math.floor((x_nor.inf / itv_pi2.inf) + 0.5)
+                x_nor -= n * itv_pi2
+            if math.fabs(rf.rdsub(x.sup, x.inf, rdm.down)) > itv_pi2.sup:
                 return interval(-1., 1.)
             tmp1 = interval.math.cos_point(interval(x_nor.inf))
             tmp2 = interval.math.cos_point(interval(x_nor.sup))
             r = interval.hull(tmp1, tmp2)
             if interval.zero_in(r):
                 r = interval.hull(r, 1.)
-            if interval.subset(intval_pi2, x_nor):
+            if interval.subset(itv_pi2, x_nor):
                 r = interval.hull(r, 1.)
-            if interval.subset(-intval_pi, x_nor):
+            if interval.subset(-itv_pi, x_nor):
                 r = interval.hull(r, -1.)
-            if interval.subset(intval_pi, x_nor):
+            if interval.subset(itv_pi, x_nor):
                 r = interval.hull(r, -1.)
-            if interval.subset(intval_pi * 3., x_nor):
+            if interval.subset(itv_pi * 3., x_nor):
                 r = interval.hull(r, -1.)
             return interval.intersect(r, interval(-1., 1.))
 
@@ -589,15 +589,15 @@ class interval:
             return tmp1 / tmp2
 
         def tan(x):
-            intval_pi = interval.math.pi()
-            intval_pih = intval_pi * 0.5
+            itv_pi = interval.math.pi()
+            itv_pih = itv_pi * 0.5
             if interval.math.isinf(x) == True:
                 return interval.hull(-1., 1.)
             x_nor = x
-            while x_nor <= -intval_pi.inf or x_nor >= intval_pi.sup:
-                n = math.floor((x_nor.inf / intval_pi2.inf) + 0.5)
-                x_nor -= n * intval_pi2
-            if x_nor.sup >= intval_pih:
+            while x_nor <= -itv_pi.inf or x_nor >= itv_pi.sup:
+                n = math.floor((x_nor.inf / itv_pi2.inf) + 0.5)
+                x_nor -= n * itv_pi2
+            if x_nor.sup >= itv_pih:
                 interval.whole()
             tmp1 = interval.math.tan_point(x_nor.inf)
             tmp2 = interval.math.tan_point(x_nor.sup)
@@ -624,22 +624,22 @@ class interval:
             return r
 
         def atan_point(x):
-            intval_pi = interval.math.pi()
-            intval_x = interval(x)
+            itv_pi = interval.math.pi()
+            itv_x = interval(x)
             if x < -(math.sqrt(2.) + 1.):
-                t1 = 1. / intval_x
-                return -intval_pi * 0.5 - interval.math.atan_origin(t1)
+                t1 = 1. / itv_x
+                return -itv_pi * 0.5 - interval.math.atan_origin(t1)
             if x < -(math.sqrt(2.) - 1.):
-                t1 = 1. + intval_x
-                t2 = 1. - intval_x
-                return -intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
+                t1 = 1. + itv_x
+                t2 = 1. - itv_x
+                return -itv_pi * 0.25 + interval.math.atan_origin(t1 / t2)
             if x < (math.sqrt(2.) - 1.):
-                return interval.math.atan_origin(intval_x)
+                return interval.math.atan_origin(itv_x)
             if x < (math.sqrt(2.) + 1.):
-                t1 = intval_x - 1.
-                t2 = intval_x + 1.
-                return intval_pi * 0.25 + interval.math.atan_origin(t1 / t2)
-            return intval_pi * 0.5 - interval.math.atan_origin(1. / intval_x)
+                t1 = itv_x - 1.
+                t2 = itv_x + 1.
+                return itv_pi * 0.25 + interval.math.atan_origin(t1 / t2)
+            return itv_pi * 0.5 - interval.math.atan_origin(1. / itv_x)
 
         def atan(x):
             t1 = interval.math.atan_point(x.inf)
@@ -647,15 +647,15 @@ class interval:
             return interval(t1.inf, t2.sup)
 
         def asin_point(x):
-            intval_pi = interval.math.pi()
-            intval_pih = intval_pi * 0.5
+            itv_pi = interval.math.pi()
+            itv_pih = itv_pi * 0.5
             if x < -1. or x > 1.:
                 # TODO: nice erroe message
                 return "error"
             if x == 1.:
-                return intval_pih
+                return itv_pih
             if x == -1.:
-                return -intval_pih
+                return -itv_pih
             if math.fabs(x) < math.sqrt(6.) / 3.:
                 t1 = interval(x) * x
                 return interval.math.atan(x / interval.math.sqrt(1. - t1))
@@ -675,21 +675,21 @@ class interval:
             return interval(t1.inf, t2.sup)
 
         def pih_m_atan_point(x):
-            intval_pi = interval.math.pi()
+            itv_pi = interval.math.pi()
             if x.inf < -(math.sqrt(2.) + 1.):
-                return intval_pi + interval.math.atan_origin(1. / x)
+                return itv_pi + interval.math.atan_origin(1. / x)
             elif x.inf < -(math.sqrt(2.) - 1.):
                 tmp = (1. + x) / (1. - x)
-                return intval_pi * 0.75 - interval.math.atan_origin(tmp)
+                return itv_pi * 0.75 - interval.math.atan_origin(tmp)
             elif x.inf < math.sqrt(2.) - 1.:
-                return intval_pi * 0.5 - interval.math.atan_origin(x)
+                return itv_pi * 0.5 - interval.math.atan_origin(x)
             elif x.inf < math.sqrt(2.) + 1.:
                 tmp = (x - 1.) / (x + 1.)
-                return intval_pi * 0.25 - interval.math.atan_origin(tmp)
+                return itv_pi * 0.25 - interval.math.atan_origin(tmp)
             return interval.math.atan_origin(1. / x)
 
         def acos_point(x):
-            intval_pi = interval.math.pi()
+            itv_pi = interval.math.pi()
             if x < -1. or x > 1.:
                 # TODO: nice erroe message
                 print("error")
@@ -697,7 +697,7 @@ class interval:
             elif x == 1.:
                 return interval(0.)
             elif x == -1.:
-                return intval_pi
+                return itv_pi
             if math.fabs(x) < math.sqrt(6.) / 3.:
                 tmp = interval.math.sqrt(1. - interval(x) * x)
                 return interval.math.pih_m_atan_point(x / tmp)
@@ -708,7 +708,74 @@ class interval:
                 else:
                     tmp = interval.math.sqrt((1. + x) * (1. - interval(x)))
                     return interval.math.pih_m_atan_point(x / tmp)
+
         def acos(x):
             t1 = interval.math.acos_point(x.sup)
             t2 = interval.math.acos_point(x.inf)
             return interval(t1.inf, t2.sup)
+
+        def atan2_point(y, x):
+            itv_pi = interval.math.pi()
+            itv_x = interval(x)
+            itv_y = interval(y)
+            if y <= x and y > -x:
+                return atan(itv_x / itv_y)
+            elif y > x and y > -x:
+                return itv_pi * 0.5 - interval.math.atan(itv_x / itv_y)
+            elif y > x and y <= -x:
+                if y >= 0.:
+                    return itv_pi + interval.math.atan(itv_x / itv_y)
+                else:
+                    return -itv_pi + interval.math.atan(itv_x / itv_y)
+            return -itv_pi * 0.5 - interval.math.atan(itv_x / itv_y)
+
+        def atan2(Iy, Ix):
+            itv_pi = interval.math.pi()
+            itv_pi2 = itv_pi * 2.
+            if interval.zero_in(Ix) == True:
+                if interval.zero_in(Iy) == True:
+                    return interval(-itv_pi.sup, itv_pi.sup)
+                else:
+                    if Iy > 0.:
+                        t1 = interval.math.atan2_point(Iy.inf, Ix.sup)
+                        t2 = interval.math.atan2_point(Iy.inf, Ix.inf)
+                        return interval(t1.inf, t2.sup)
+                    else:
+                        t1 = interval.math.atan2_point(Iy.sup, Ix.inf)
+                        t2 = interval.math.atan2_point(Iy.sup, Ix.sup)
+                        return interval(t1.inf, t2.sup)
+            else:
+                if interval.zero_in(Iy) == True:
+                    if Ix > 0.:
+                        t1 = interval.math.atan2_point(Iy.inf, Ix.inf)
+                        t2 = interval.math.atan2_point(Iy.sup, Ix.inf)
+                        return interval(t1.inf, t2.sup)
+                    else:
+                        if Iy.inf < 0.:
+                            t1 = interval.math.atan2_point(Iy.sup, Ix.sup)
+                            tmp = interval.math.atan2_point(Iy.inf, Ix.sup)
+                            t2 = itv_p2 + tmp
+                            return interval(t1.inf, t2.sup)
+                        else:
+                            t1 = interval.math.atan2_point(Iy.sup, Ix.sup)
+                            t2 = interval.math.atan2_point(Iy.inf, Ix.sup)
+                            return interval(t1.inf, t2.sup)
+                else:
+                    if Ix > 0.:
+                        if Iy > 0.:
+                            t1 = interval.math.atan2_point(Iy.inf, Ix.sup)
+                            t2 = interval.math.atan2_point(Iy.sup, Ix.inf)
+                            return interval(t1.inf, t2.sup)
+                        else:
+                            t1 = interval.math.atan2_point(Iy.inf, Ix.inf)
+                            t2 = interval.math.atan2_point(Iy.sup, Ix.sup)
+                            return interval(t1.inf, t2.sup)
+                    else:
+                        if Iy > 0.:
+                            t1 = interval.math.atan2_point(Iy.sup, Ix.sup)
+                            t2 = interval.math.atan2_point(Iy.inf, Iy.inf)
+                            return interval(t1.inf, t2.sup)
+                        else:
+                            t1 = interval.math.atan2_point(Iy.sup, Ix.inf)
+                            t2 = interval.math.atan2_point(Iy.inf, Ix.sup)
+                            return interval(t1.inf, t2.sup)
