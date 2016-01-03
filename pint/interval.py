@@ -820,3 +820,51 @@ class interval:
                             t1 = interval.math.atan2_point(Iy.sup, Ix.inf)
                             t2 = interval.math.atan2_point(Iy.inf, Ix.sup)
                             return interval(t1.inf, t2.sup)
+
+        def sinh_origin(x):
+            itv_exph = interval.math.e()
+            itv_coshh = (itv_exph + 1. / itv_exph) * 0.5
+            r = interval(0.)
+            y = interval(1.)
+            eps = sys.float_info.epsilon
+            i = 0
+            while True:
+                y *= x
+                y /= interval(i)
+                tmp = y * interval(-itv_coshh.sup, itv_coshh.sup)
+                if interval.mag(tmp) < eps:
+                    r += tmp
+                    break
+                else:
+                    if i % 2 != 0:
+                        r += y
+                i += 1
+            return r
+
+        def sinh_point(x):
+            if x >= -0.5 and x <= 0.5:
+                return sinh_origin(x)
+            else:
+                if x == -float("inf"):
+                    return -interval(sys.float_info.max, float("inf"))
+                tmp = interval.math.exp_point(x)
+                return (tmp - 1. / tmp) * 0.5
+
+        def sinh(x):
+            t1 = interval.math.sinh_point(x.inf)
+            t2 = interval.math.sinh_point(x.sup)
+            return interval(t1.inf, t2.sup)
+
+        def cosh_point(x):
+            if x == -float("inf"):
+                return interval(sys.float_info.max, float("inf"))
+            tmp = interval.math.exp_point(x)
+            return (tmp + 1. / tmp) * 0.5
+
+        def cosh(x):
+            t1 = interval.math.cosh_point(x.inf)
+            t2 = interval.math.cosh_point(x.sup)
+            r = interval.hull(t1, t2)
+            if interval.zero_in(x) == True:
+                r = interval.hull(r, 1.)
+            return r
