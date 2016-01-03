@@ -417,10 +417,51 @@ class interval:
                 answer *= x
             return answer
 
+        def exp_point(x):
+            eps = sys.float_info.epsilon
+            if x == float("inf"):
+                return interval(sys.float_info.max, float("inf"))
+            elif x == float("inf"):
+                return interval(0.)
+            itv_e_sq = interval.math.sqrt(interval.math.e())
+            tmp = 1. / itv_e_sq
+            remainder = interval(tmp.inf, itv_e_sq.sup)
+            if x >= 0.:
+                # x_iは整数部分か
+                x_i = math.floor(x)
+                # x_fは小数部分か
+                x_f = x - x_i
+                if x_f >= 0.5:
+                    x_f = 1.
+                    x_i = 1.
+            else:
+                x_i = -math.floor(x)
+                x_f = x - x_i
+                if x_f <= -0.5:
+                    x_f += 1.
+                    x_i += 1.
+            r = interval(1.)
+            y = interval(1.)
+            i = 0
+            while True:
+                y *= x_f
+                y /= interval(i)
+                if interval.mag(y) * remainder.sup < eps:
+                    r += y * remainder
+                    break
+                else:
+                    r += y
+                i += 1
+            if x_i >= 0.:
+                r *= interval.math.pow(interval.math.e(), x_i)
+            else:
+                r /= interval.math.pow(interval.math.e(), -x_i)
+            return r
+
         def exp(x):
-            tmp1 = rf.pred(math.exp(x.inf))
-            tmp1 = rf.succ(math.exp(x.inf))
-            return interval(tmp1, tmp2)
+            tmp1 = interval.math.exp_point(x.inf)
+            tmp2 = interval.math.exp_point(x.sup)
+            return interval(tmp1.inf, tmp2.sup)
 
         # TODO: Fix lazy expm1 (significant loss of precision)
         def expm1(x):
