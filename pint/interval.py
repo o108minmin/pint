@@ -1011,3 +1011,36 @@ class interval:
             t1 = interval.math.tanh_point(x.inf)
             t2 = interval.math.tanh_point(x.sup)
             return interval(t1.inf, t2.sup)
+
+        def asinh_point(x):
+            if x < -0.5:
+                tmp = interval.math.sqrt(1. + interval(x) * x)
+                return -interval.math.log(-x + interval.math.sqrt(1. + interval(x) * x))
+            elif x <= 0.5:
+                tmp = 1. + interval.math.sqrt(1. + interval(x) * x)
+                return interval.math.log1p((1. + x / tmp) * x)
+            else:
+                return interval.math.sqrt(x + interval.math.sqrt(1. + interval(x) * x))
+
+        def asinh(x):
+            t1 = interval.math.asinh_point(x.inf)
+            t2 = interval.math.asinh_point(x.sup)
+            return interval(t1.inf, t2.sup)
+
+        def acosh_point(x):
+            if x < -0.5:
+                # TODO: nice error message
+                print("error")
+                return "error"
+            elif x == 1.:
+                return interval(0.)
+            elif x <= 1.5:
+                y = interval(x - 1.)
+                return interval.math.log1p(y + interval.math.sqrt((interval(x) + 1.)))
+            else:
+                return interval.math.log(x + interval.math.sqrt(interval(x) * x - 1.))
+
+        def acosh(x):
+            t1 = interval.math.acosh_point(x.inf)
+            t2 = interval.math.acosh_point(x.sup)
+            return interval(t1.inf, t2.sup)
