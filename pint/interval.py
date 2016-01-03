@@ -417,6 +417,28 @@ class interval:
                 answer *= x
             return answer
 
+        def ln2():
+            eps = sys.float_info.epsilon
+            x2 = interval.math.sqrt(interval.math.sqrt(interval(2.)))
+            x2m1 = x2 - 1.
+            cinv = 1. / interval.hull(x2, 1.)
+            tmp = interval(0.)
+            xn = interval(-1.)
+            xn2 = interval(-1.)
+            i = 1
+            while True:
+                xn = -xn * x2m1
+                xn2 = -xn2 * cinv * x2m1
+                t = xn2 / interval(i)
+                if interval.mag(t) < eps:
+                    tmp += t
+                    break
+                else:
+                    tmp += xn / interval(i)
+                i += 1
+            tmp = tmp * 4
+            return tmp
+
         def exp_point(x):
             eps = sys.float_info.epsilon
             if x == float("inf"):
@@ -471,10 +493,73 @@ class interval:
             return x * (2 ** i)
 
         # TODO: Fix log, log2 and log10 for x(double)
+        def log_point(x, rd):
+            eps = sys.float_info.epsilon
+            itv_sqrt2 = interval.math.sqrt(interval(2.))
+            if x == float("inf"):
+                if rd == 1:
+                    return float("inf")
+                else:
+                    return sys.float_info.max
+            if x == 0.:
+                if rd == 1:
+                    return -sys.float_info.max
+                else:
+                    return -float("inf")
+            x2, p_i = math.frexp(x)
+            #p = interval(p_i)
+            p = p_i
+            while x2 > 4. * math.sqrt(2.) - 4.:
+                x2 = x2 * 0.5
+                p = p + 1.
+            while x2 > 4. - 2. * math.sqrt(2.):
+                tmp = x2 / itv_sqrt2
+                if rd == -1:
+                    x2 = tmp.inf
+                else:
+                    x2 = tmp.sup
+                p += 0.5
+            while x2 < 2. - math.sqrt(2.):
+                x2 *= 2.
+                p -= 1.
+            while x2 < 2. * math.sqrt(2.) - 2.:
+                tmp = x2 * itv_sqrt2
+                if rd == -1:
+                    x2 = tmp.inf
+                else:
+                    x2 = tmp.sup
+                p -= 0.5
+
+            x2m1 = x2 - 1.
+            cinv = 1. / interval.hull(x2, 1.)
+            r = interval(0.)
+            xn = interval(-1.)
+            xn2 = interval(-1.)
+            i = 1
+            while True:
+                xn = -xn * x2m1
+                xn2 = -xn2 * cinv * x2m1
+                tmp = xn2 / interval(i)
+                if interval.mag(tmp) < eps:
+                    r += tmp
+                    break
+                else:
+                    r += xn / interval(i)
+                i += 1
+            r += interval.math.ln2() * p
+            if rd == -1:
+                return r.inf
+            else:
+                return r.sup
+
         def log(x):
-            tmp1 = rf.pred(math.log(x.inf))
-            tmp2 = rf.succ(math.log(x.sup))
-            return interval(tmp1, tmp2)
+            if x.inf < 0.:
+                #TODO: nice error message
+                print("error")
+                return "error"
+            t1 = interval.math.log_point(x.inf, -1)
+            t2 = interval.math.log_point(x.sup, 1)
+            return interval(t1, t2)
 
         def log2(x):
             tmp1 = rf.pred(math.log2(x.inf))
@@ -485,6 +570,51 @@ class interval:
             tmp1 = rf.pred(math.log10(x.inf))
             tmp2 = rf.succ(math.log10(x.sup))
             return interval(tmp1, tmp2)
+
+        def log1p_origin(x):
+            eps = sys.float_info.epsilon
+            cinv = 1. / interval.hull(x + interval(1.), 1.)
+            r = interval(0.)
+            xn = interval(-1.)
+            xn2 = interval(-1.)
+            i = 1
+            while True:
+                xn = -xn * x
+                xn2 = -xn2 * cinv * x
+                tmp = xn2 / interval(i)
+                if interval.mag(tmp) < eps:
+                    r += xn2 / interval(i)
+                    break
+                else:
+                    r += xn / interval(i)
+                i += 1
+            return r
+
+        def log1p_point(x, rd):
+            f3m2sqrt2 = 3. - 2. * math.sqrt(2.)
+            if x >= -f3m2sqrt2 and x <= f3m2sqrt2:
+                tmp = interval.math.log1p_origin(x)
+                if rd == -1:
+                    return tmp.inf
+                else:
+                    return tmp.sup
+            else:
+                tmp = x + interval(1.)
+                if rd == -1:
+                    return interval.math.log_point(tmp.inf, -1)
+                else:
+                    return interval.math.log_point(tmp.sup, 1)
+
+        def log1p(x):
+            if x.inf < -1.:
+                #TODO: nice error message
+                print("error")
+                return "error"
+            else:
+                t1 = interval.math.log1p_point(x.inf, -1)
+                t2 = interval.math.log1p_point(x.sup, 1)
+                return (t1, t2)
+
 
         def sin_origin(x):
             r = interval(0.)
