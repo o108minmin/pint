@@ -868,3 +868,16 @@ class interval:
             if interval.zero_in(x) == True:
                 r = interval.hull(r, 1.)
             return r
+
+        def tanh_point(x):
+            if x > 0.5:
+                return 1. - 2. / (1. + interval.math.exp_point(2. * x))
+            elif x < -0.5:
+                return 2. / (1. + interval.math.exp_point(-2. * x)) - 1.
+            else:
+                return interval.math.sinh_origin(x) / interval.math.cosh_point(x)
+
+        def tanh(x):
+            t1 = interval.math.tanh_point(x.inf)
+            t2 = interval.math.tanh_point(x.sup)
+            return interval(t1.inf, t2.sup)
