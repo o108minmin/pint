@@ -20,7 +20,7 @@ class interval:
             self.sup = args[1]
         else:
             self.inf = 0.
-         if args[0] == "interval":
+        if args[0].__class__.__name__ == "interval":
             self.inf = args[0].inf
             self.sup = args[0].sup
 
