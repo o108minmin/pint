@@ -462,3 +462,297 @@ class vmath:
         if self.return_type != None:
             answer = self.return_type(answer)
         return answer
+
+    def acos(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.acos(arg[0])
+        else:
+            answer = math.acos(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def asin(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.asin(arg[0])
+        else:
+            answer = math.asin(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def atan(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.atan(arg[0])
+        else:
+            answer = math.atan(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def atan2(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        y = arg[0]
+        x = arg[1]
+        if self.arg_type != None:
+            y = self.arg_type(arg[0])
+            x = self.arg_type(arg[1])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.atan2(y, x)
+        else:
+            answer = math.atan2(y, x)
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def cos(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.cos(arg[0])
+        else:
+            answer = math.cos(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def hypot(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        x = arg[0]
+        y = arg[1]
+        if self.arg_type != None:
+            x = self.arg_type(arg[0])
+            y = self.arg_type(arg[1])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.hypot(x, y)
+        else:
+            answer = math.hypot(x, y)
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def sin(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.sin(arg[0])
+        else:
+            answer = math.sin(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def tan(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.tan(arg[0])
+        else:
+            answer = math.tan(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def degrees(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.degrees(arg[0])
+        else:
+            answer = math.degrees(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def radians(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.radians(arg[0])
+        else:
+            answer = math.radians(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def acosh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.acosh(arg[0])
+        else:
+            answer = math.acosh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def asinh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.asinh(arg[0])
+        else:
+            answer = math.asinh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def atanh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.atanh(arg[0])
+        else:
+            answer = math.atanh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def cosh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.cosh(arg[0])
+        else:
+            answer = math.cosh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def sinh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.sinh(arg[0])
+        else:
+            answer = math.sinh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def tanh(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.tanh(arg[0])
+        else:
+            answer = math.tanh(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
