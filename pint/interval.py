@@ -13,14 +13,17 @@ class interval:
     def __init__(self, *args):
         length = len(args)
         if length == 1:
-            self.inf = float(args[0])
-            self.sup = float(args[0])
+            self.inf = args[0]
+            self.sup = args[0]
         elif length >= 2:
-            self.inf = float(args[0])
-            self.sup = float(args[1])
+            self.inf = args[0]
+            self.sup = args[1]
         else:
             self.inf = 0.
-            self.sup = 0.
+         if args[0] == "interval":
+            self.inf = args[0].inf
+            self.sup = args[0].sup
+
 
     def __add__(self, arg):
         answer = interval(0.)
@@ -552,24 +555,25 @@ class interval:
             else:
                 return r.sup
 
-        def log(x):
+        def log(x, base = math.e):
             if x.inf < 0.:
                 #TODO: nice error message
                 print("error")
                 return "error"
             t1 = interval.math.log_point(x.inf, -1)
             t2 = interval.math.log_point(x.sup, 1)
-            return interval(t1, t2)
+            if base != math.e:
+                b1 = interval.math.log_point(base, -1)
+                b2 = interval.math.log_point(base, 1)
+                return interval(t1, t2) / interval(b1, b2)
+            else:
+                return interval(t1, t2)
 
         def log2(x):
-            tmp1 = rf.pred(math.log2(x.inf))
-            tmp2 = rf.succ(math.log2(x.sup))
-            return interval(tmp1, tmp2)
+            return interval.math.log(x, 2)
 
         def log10(x):
-            tmp1 = rf.pred(math.log10(x.inf))
-            tmp2 = rf.succ(math.log10(x.sup))
-            return interval(tmp1, tmp2)
+            return interval.math.log(x, 10)
 
         def log1p_origin(x):
             eps = sys.float_info.epsilon

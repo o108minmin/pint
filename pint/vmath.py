@@ -330,3 +330,135 @@ class vmath:
         if self.return_type != None:
             answer = self.return_type(answer)
         return answer
+
+    def exp(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.exp(arg[0])
+        else:
+            answer = math.exp(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def expm1(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.expm1(arg[0])
+        else:
+            answer = math.expm1(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def log(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            if len(arg) >= 2:
+                answer = arg[0].math.log(arg[0], arg[1])
+            else:
+                answer = arg[0].math.log(arg[0])
+        else:
+            if len(arg) >= 2:
+                answer = math.log(arg[0], arg[1])
+            else:
+                answer = math.log(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def log1p(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.log1p(arg[0])
+        else:
+            answer = math.log1p(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def log2(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.log2(arg[0])
+        else:
+            answer = math.log2(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def log10(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.log10(arg[0])
+        else:
+            answer = math.log10(arg[0])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
+
+    def pow(*args):
+        if args[0].__class__.__name__ == "vmath":
+            self = args[0]
+        else:
+            self = vmath()
+        arg = vmath.self_remove(args)
+        if self.arg_type != None:
+            arg[0] = self.arg_type(arg[0])
+        arg_name = arg[0].__class__.__name__
+        pn_class_much = [x for x in vmath.pn_class if x == arg_name]
+        if len(pn_class_much) == 1:
+            answer = arg[0].math.pow(arg[0], arg[1])
+        else:
+            answer = math.pow(arg[0], arg[1])
+        if self.return_type != None:
+            answer = self.return_type(answer)
+        return answer
