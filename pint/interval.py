@@ -13,11 +13,11 @@ class interval:
     def __init__(self, *args):
         length = len(args)
         if length == 1:
-            self.inf = args[0]
-            self.sup = args[0]
+            self.inf = rf.pred(args[0])
+            self.sup = rf.succ(args[0])
         elif length >= 2:
-            self.inf = args[0]
-            self.sup = args[1]
+            self.inf = rf.pred(args[0])
+            self.sup = rf.succ(args[1])
         else:
             self.inf = 0.
         if args[0].__class__.__name__ == "interval":
