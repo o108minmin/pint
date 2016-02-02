@@ -182,8 +182,8 @@ class interval:
                 answer.inf = rf.rddiv(arg, self.sup, rdm.down)
                 answer.sup = rf.rddiv(arg, self.inf, rdm.up)
             else:
-                answer.inf = rf.rddiv(arg, self.inf, rmd.down)
-                answer.sup = rf.rddiv(arg, self.sup, rmd.up)
+                answer.inf = rf.rddiv(arg, self.inf, rdm.down)
+                answer.sup = rf.rddiv(arg, self.sup, rdm.up)
         else:
             # TODO: nice error message
             print("error")
