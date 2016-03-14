@@ -5,35 +5,43 @@ from .core import roundfloat as rf
 import math
 import sys
 
-
 class interval:
     inf = 0.
     sup = 0.
 
     def __init__(self, *args):
         length = len(args)
-        if length == 1:
-            self.inf = rf.pred(args[0])
-            self.sup = rf.succ(args[0])
-        elif length >= 2:
-            self.inf = rf.pred(args[0])
-            self.sup = rf.succ(args[1])
-        else:
+        if length == 0:
             self.inf = 0.
-        if args[0].__class__.__name__ == "interval":
-            self.inf = args[0].inf
-            self.sup = args[0].sup
-
+        else:
+            if length >= 1:
+                if args[0].__class__.__name__ == "interval":
+                    self.inf = args[0].inf
+                    self.sup = args[0].sup
+                elif args[0].__class__.__name__ == "str":
+                    arg0_frac = rf.stringtofraction(args[0])
+                    self.inf = rf.rddiv(arg0_frac.numerator, arg0_frac.denominator,rdm.down)
+                    self.sup = rf.rddiv(arg0_frac.numerator, arg0_frac.denominator,rdm.up)
+                else:
+                    self.inf = args[0]
+                    self.sup = args[0]
+            if length >= 2:
+                if args[0].__class__.__name__ == "interval":
+                    self.sup = args[1].sup
+                if args[1].__class__.__name__ == "str":
+                    arg1_frac = rf.stringtofraction(args[1])
+                    self.sup = rf.rddiv(arg1_frac.numerator, arg1_frac.denominator,rdm.up)
+                else:
+                    self.sup = args[1]
 
     def __add__(self, arg):
         answer = interval(0.)
-        if (arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
-            answer.inf = rf.rdadd(self.inf, arg, rdm.down)
-            answer.sup = rf.rdadd(self.sup, arg, rdm.up)
-        elif arg.__class__.__name__ == 'interval':
+        if arg.__class__.__name__ == 'interval':
             answer.inf = rf.rdadd(self.inf, arg.inf, rdm.down)
             answer.sup = rf.rdadd(self.sup, arg.sup, rdm.up)
+        else:
+            answer.inf = rf.rdadd(self.inf, arg, rdm.down)
+            answer.sup = rf.rdadd(self.sup, arg, rdm.up)
         return answer
 
     def __iadd__(self, arg):
@@ -44,14 +52,12 @@ class interval:
 
     def __sub__(self, arg):
         answer = interval(0.)
-        if (
-                arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
-            answer.inf = rf.rdsub(self.inf, arg, rdm.down)
-            answer.sup = rf.rdsub(self.sup, arg, rdm.up)
-        elif arg.__class__.__name__ == 'interval':
+        if arg.__class__.__name__ == 'interval':
             answer.inf = rf.rdsub(self.inf, arg.sup, rdm.down)
             answer.sup = rf.rdsub(self.sup, arg.inf, rdm.up)
+        else:
+            answer.inf = rf.rdsub(self.inf, arg, rdm.down)
+            answer.sup = rf.rdsub(self.sup, arg, rdm.up)
         return answer
 
     def __isub__(self, arg):
@@ -122,19 +128,7 @@ class interval:
 
     def __truediv__(self, arg):
         answer = interval(0.)
-        if (
-                arg.__class__.__name__ == 'int' or
-                arg.__class__.__name__ == 'float'):
-            if arg > 0.:
-                answer.inf = rf.rddiv(self.inf, arg, rdm.down)
-                answer.sup = rf.rddiv(self.sup, arg, rdm.up)
-            elif arg < 0.:
-                answer.inf = rf.rddiv(self.sup, arg, rdm.down)
-                answer.sup = rf.rddiv(self.inf, arg, rdm.up)
-            else:
-                # TODO: nice error message
-                print("error")
-        elif arg.__class__.__name__ == 'interval':
+        if arg.__class__.__name__ == 'interval':
             if arg.inf > 0.:
                 if self.inf >= 0.:
                     answer.inf = rf.rddiv(
@@ -168,7 +162,16 @@ class interval:
                     answer.sup = rf.rddiv(
                         self.inf, arg.sup, rdm.up)
             else:
-                pass
+                if arg > 0.:
+                    answer.inf = rf.rddiv(self.inf, arg, rdm.down)
+                    answer.sup = rf.rddiv(self.sup, arg, rdm.up)
+                elif arg < 0.:
+                    answer.inf = rf.rddiv(self.sup, arg, rdm.down)
+                    answer.sup = rf.rddiv(self.inf, arg, rdm.up)
+                else:
+                    # TODO: nice error message
+                    print("error")
+
         return answer
 
     def __itruediv__(self, arg):
@@ -210,7 +213,7 @@ class interval:
                 return a.sup < b.inf
             else:
                 return a.sup < b
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return a < b.inf
             else:
@@ -222,7 +225,7 @@ class interval:
                 return a.sup <= b.inf
             else:
                 return a.sup <= b
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return a <= b.inf
             else:
@@ -234,7 +237,7 @@ class interval:
                 return a.sup == b.inf and b.inf == b.sup
             else:
                 return a.sup == a.inf and a.sup == b
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return b.sup == b.inf and b.sup == a
             else:
@@ -247,7 +250,7 @@ class interval:
                 return interval.overlap(a, b)
             else:
                 return interval.overlap(a, interval(b))
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return interval.overlap(interval(a), b)
             else:
@@ -259,7 +262,7 @@ class interval:
                 return a.inf >= b.sup
             else:
                 return a.inf >= b
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return a >= b.sup
             else:
@@ -271,7 +274,7 @@ class interval:
                 return a.inf > b.sup
             else:
                 return a.inf > b
-        if a.__class__.__name__ == "float":
+        else:
             if b.__class__.__name__ == "interval":
                 return a > b.sup
             else:
@@ -365,6 +368,9 @@ class interval:
             tmp2 = y.sup
         return interval(tmp1, tmp2)
 
+    def from_fraction(*args):
+        pass
+
     # math functions
     class math:
 
@@ -411,13 +417,33 @@ class interval:
                 return False
             return True
 
-        def pow(x, i):
-            # TODO: write pow(x, interval i)
-            if i.__class__.__name__ == "interval":
-                pass
+        def pow_point(x, i):
             answer = interval(1.)
-            for times in range(0, i, 1):
-                answer *= x
+            xp = interval(x)
+            while i != 0:
+                if i % 2 != 0:
+                    answer *= xp
+                i =i // 2
+                xp *= xp
+            return answer
+
+        def pow(x, i):
+            if i.__class__.__name__ == "interval":
+                return interval.math.exp(i * interval.math.log(x))
+            answer = interval(0.)
+            xp = interval(0.)
+            if i == 0:
+                return interval(1.)
+            if i >= 0:
+                a = i
+            else:
+                a = -i
+            if a % 2 == 0 and interval.number_in(x, 0):
+                answer = interval.hull(0. ,interval.math.pow_point(x.mag(), a))
+            else:
+                answer = interval.hull(interval.math.pow_point(x.inf, a), interval.math.pow_point(x.sup, a))
+            if i < 0.:
+                answer = 1. / answer
             return answer
 
         def ln2():

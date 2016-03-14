@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from sys import float_info
 import math
+import fractions
 from enum import IntEnum
 
 class roundmode(IntEnum):
@@ -226,3 +227,11 @@ class roundfloat:
             if x > arg or (x == arg and y > 0.):
                 d = roundfloat.pred(d)
         return d
+
+    def stringtofraction(arg):
+        arg_up, arg_down = arg.split(".")
+        ans = fractions.Fraction(0, 1)
+        for i in range(0, len(arg_down)):
+            ans += fractions.Fraction(int(arg_down[i]), 10 ** (i + 1))
+        ans += fractions.Fraction(int(arg_up), 1)
+        return ans
