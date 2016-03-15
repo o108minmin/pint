@@ -197,7 +197,6 @@ class interval:
 
     @staticmethod
     def format(self, *format_spec):
-        print(format_spec)
         if len(format_spec) != 0 and format_spec[0] != '':
             ans_inf = format(self.inf, format_spec[0])
             ans_sup = format(self.sup, format_spec[0])
