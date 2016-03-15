@@ -9,6 +9,7 @@ import sys
 class interval:
     inf = 0.
     sup = 0.
+    format_spec = ''
 
     def __init__(self, *args):
         length = len(args)
@@ -194,8 +195,30 @@ class interval:
             print("error")
         return ans
 
-    def __str__(self):
-        return '[' + str(self.inf) + ',' + str(self.sup) + ']'
+    @staticmethod
+    def format(self, *format_spec):
+        print(format_spec)
+        if len(format_spec) != 0 and format_spec[0] != '':
+            ans_inf = format(self.inf, format_spec[0])
+            ans_sup = format(self.sup, format_spec[0])
+        elif self.format_spec != '':
+            ans_inf = format(self.inf, self.format_spec)
+            ans_sup = format(self.sup, self.format_spec)
+        else:
+            ans_inf = format(self.inf)
+            ans_sup = format(self.sup)
+        return '[' + ans_inf + ',' + ans_sup + ']'
+
+    def __format__(self, *format_spec):
+        return self.format(self, *format_spec)
+
+    def str(self):
+        ans_inf = str(self.inf)
+        ans_sup = str(self.sup)
+        return '[' + ans_inf + ',' + ans_sup + ']'
+
+    def __str__(self, *args):
+        return self.str()
 
     def __repr__(self):
         return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
