@@ -5,6 +5,7 @@ from .core import roundfloat as rf
 import math
 import sys
 
+
 class interval:
     inf = 0.
     sup = 0.
@@ -12,6 +13,7 @@ class interval:
     def __init__(self, *args):
         length = len(args)
         if length == 0:
+            self.sup = 0.
             self.inf = 0.
         else:
             if length >= 1:
@@ -19,9 +21,9 @@ class interval:
                     self.inf = args[0].inf
                     self.sup = args[0].sup
                 elif args[0].__class__.__name__ == "str":
-                    arg0_frac = rf.stringtofraction(args[0])
-                    self.inf = rf.rddiv(arg0_frac.numerator, arg0_frac.denominator,rdm.down)
-                    self.sup = rf.rddiv(arg0_frac.numerator, arg0_frac.denominator,rdm.up)
+                    a0 = rf.stringtofraction(args[0])
+                    self.inf = rf.rddiv(a0.numerator, a0.denominator, rdm.down)
+                    self.sup = rf.rddiv(a0.numerator, a0.denominator, rdm.up)
                 else:
                     self.inf = args[0]
                     self.sup = args[0]
@@ -29,20 +31,20 @@ class interval:
                 if args[0].__class__.__name__ == "interval":
                     self.sup = args[1].sup
                 if args[1].__class__.__name__ == "str":
-                    arg1_frac = rf.stringtofraction(args[1])
-                    self.sup = rf.rddiv(arg1_frac.numerator, arg1_frac.denominator,rdm.up)
+                    a1 = rf.stringtofraction(args[1])
+                    self.sup = rf.rddiv(a1.numerator, a1.denominator, rdm.up)
                 else:
                     self.sup = args[1]
 
     def __add__(self, arg):
-        answer = interval(0.)
+        ans = interval(0.)
         if arg.__class__.__name__ == 'interval':
-            answer.inf = rf.rdadd(self.inf, arg.inf, rdm.down)
-            answer.sup = rf.rdadd(self.sup, arg.sup, rdm.up)
+            ans.inf = rf.rdadd(self.inf, arg.inf, rdm.down)
+            ans.sup = rf.rdadd(self.sup, arg.sup, rdm.up)
         else:
-            answer.inf = rf.rdadd(self.inf, arg, rdm.down)
-            answer.sup = rf.rdadd(self.sup, arg, rdm.up)
-        return answer
+            ans.inf = rf.rdadd(self.inf, arg, rdm.down)
+            ans.sup = rf.rdadd(self.sup, arg, rdm.up)
+        return ans
 
     def __iadd__(self, arg):
         return interval.__add__(self, arg)
@@ -51,14 +53,14 @@ class interval:
         return interval.__add__(self, arg)
 
     def __sub__(self, arg):
-        answer = interval(0.)
+        ans = interval(0.)
         if arg.__class__.__name__ == 'interval':
-            answer.inf = rf.rdsub(self.inf, arg.sup, rdm.down)
-            answer.sup = rf.rdsub(self.sup, arg.inf, rdm.up)
+            ans.inf = rf.rdsub(self.inf, arg.sup, rdm.down)
+            ans.sup = rf.rdsub(self.sup, arg.inf, rdm.up)
         else:
-            answer.inf = rf.rdsub(self.inf, arg, rdm.down)
-            answer.sup = rf.rdsub(self.sup, arg, rdm.up)
-        return answer
+            ans.inf = rf.rdsub(self.inf, arg, rdm.down)
+            ans.sup = rf.rdsub(self.sup, arg, rdm.up)
+        return ans
 
     def __isub__(self, arg):
         return interval.__sub__(self, arg)
@@ -67,58 +69,58 @@ class interval:
         return interval.__add__(-self, arg)
 
     def __mul__(self, arg):
-        answer = interval(0.)
+        ans = interval(0.)
         if arg.__class__.__name__ == 'interval':
-            if interval.zero_in(arg) == True:
-                if interval.zero_in(self) == True:
-                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+            if interval.zero_in(arg) is True:
+                if interval.zero_in(self) is True:
+                    ans.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
                     tmp = rf.rdmul(self.sup, arg.inf, rdm.down)
-                    if answer.inf > tmp:
-                        answer.inf = tmp
-                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                    if ans.inf > tmp:
+                        ans.inf = tmp
+                    ans.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
                     tmp = rf.rdmul(self.sup, arg.sup, rdm.up)
-                    if answer.sup < tmp:
-                        answer.sup = tmp
+                    if ans.sup < tmp:
+                        ans.sup = tmp
                 elif self.inf >= 0.:
-                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
-                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                    ans.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    ans.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
                 elif self.sup <= 0.:
-                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
-                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                    ans.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    ans.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
             elif arg.inf >= 0.:
-                if interval.zero_in(self) == True:
-                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
-                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                if interval.zero_in(self) is True:
+                    ans.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    ans.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
                 elif self.inf >= 0.:
-                    answer.inf = rf.rdmul(self.inf, arg.inf, rdm.down)
-                    answer.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
+                    ans.inf = rf.rdmul(self.inf, arg.inf, rdm.down)
+                    ans.sup = rf.rdmul(self.sup, arg.sup, rdm.up)
                 elif self.sup <= 0.:
-                    answer.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
-                    answer.sup = rf.rdmul(self.sup, arg.inf, rdm.up)
+                    ans.inf = rf.rdmul(self.inf, arg.sup, rdm.down)
+                    ans.sup = rf.rdmul(self.sup, arg.inf, rdm.up)
             elif arg.sup <= 0.:
-                if interval.zero_in(self) == True:
-                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
-                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                if interval.zero_in(self) is True:
+                    ans.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    ans.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
                 elif self.inf >= 0.:
-                    answer.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
-                    answer.sup = rf.rdmul(self.inf, arg.sup, rdm.up)
+                    ans.inf = rf.rdmul(self.sup, arg.inf, rdm.down)
+                    ans.sup = rf.rdmul(self.inf, arg.sup, rdm.up)
                 elif self.sup <= 0.:
-                    answer.inf = rf.rdmul(self.sup, arg.sup, rdm.down)
-                    answer.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
+                    ans.inf = rf.rdmul(self.sup, arg.sup, rdm.down)
+                    ans.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
             else:
                 # TODO: nice error message
                 print("error")
         else:
             if arg >= 0.:
-                answer.inf = rf.rdmul(self.inf, arg, rdm.down)
-                answer.sup = rf.rdmul(self.sup, arg, rdm.up)
+                ans.inf = rf.rdmul(self.inf, arg, rdm.down)
+                ans.sup = rf.rdmul(self.sup, arg, rdm.up)
             elif arg < 0.:
-                answer.inf = rf.rdmul(self.sup, arg, rdm.down)
-                answer.sup = rf.rdmul(self.inf, arg, rdm.up)
+                ans.inf = rf.rdmul(self.sup, arg, rdm.down)
+                ans.sup = rf.rdmul(self.inf, arg, rdm.up)
             else:
                 # TODO: nice error message
                 print("error")
-        return answer
+        return ans
 
     def __imul__(self, arg):
         return interval.__mul__(self, arg)
@@ -127,70 +129,70 @@ class interval:
         return interval.__mul__(self, arg)
 
     def __truediv__(self, arg):
-        answer = interval(0.)
+        ans = interval(0.)
         if arg.__class__.__name__ == 'interval':
             if arg.inf > 0.:
                 if self.inf >= 0.:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.inf, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.sup, arg.inf, rdm.up)
                 elif arg.sup < 0.:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.inf, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.sup, arg.sup, rdm.up)
                 else:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.inf, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.sup, arg.inf, rdm.up)
             elif arg.sup < 0.:
                 if self.inf >= 0.:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.sup, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.inf, arg.inf, rdm.up)
                 elif self.sup < 0.:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.sup, arg.inf, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.inf, arg.sup, rdm.up)
                 else:
-                    answer.inf = rf.rddiv(
+                    ans.inf = rf.rddiv(
                         self.sup, arg.sup, rdm.down)
-                    answer.sup = rf.rddiv(
+                    ans.sup = rf.rddiv(
                         self.inf, arg.sup, rdm.up)
             else:
                 if arg > 0.:
-                    answer.inf = rf.rddiv(self.inf, arg, rdm.down)
-                    answer.sup = rf.rddiv(self.sup, arg, rdm.up)
+                    ans.inf = rf.rddiv(self.inf, arg, rdm.down)
+                    ans.sup = rf.rddiv(self.sup, arg, rdm.up)
                 elif arg < 0.:
-                    answer.inf = rf.rddiv(self.sup, arg, rdm.down)
-                    answer.sup = rf.rddiv(self.inf, arg, rdm.up)
+                    ans.inf = rf.rddiv(self.sup, arg, rdm.down)
+                    ans.sup = rf.rddiv(self.inf, arg, rdm.up)
                 else:
                     # TODO: nice error message
                     print("error")
 
-        return answer
+        return ans
 
     def __itruediv__(self, arg):
         return interval.__truediv__(self, arg)
 
     def __rtruediv__(self, arg):
         # arg / self(interval)
-        answer = interval(0.)
+        ans = interval(0.)
         if self.inf > 0. or self.sup < 0.:
             if arg >= 0.:
-                answer.inf = rf.rddiv(arg, self.sup, rdm.down)
-                answer.sup = rf.rddiv(arg, self.inf, rdm.up)
+                ans.inf = rf.rddiv(arg, self.sup, rdm.down)
+                ans.sup = rf.rddiv(arg, self.inf, rdm.up)
             else:
-                answer.inf = rf.rddiv(arg, self.inf, rdm.down)
-                answer.sup = rf.rddiv(arg, self.sup, rdm.up)
+                ans.inf = rf.rddiv(arg, self.inf, rdm.down)
+                ans.sup = rf.rddiv(arg, self.sup, rdm.up)
         else:
             # TODO: nice error message
             print("error")
-        return answer
+        return ans
 
     def __str__(self):
         return '[' + str(self.inf) + ',' + str(self.sup) + ']'
@@ -347,8 +349,8 @@ class interval:
         return interval.norm(x)
 
     def width(x):
-        answer = rf.rdsub(x.sup, x.inf)
-        return answer
+        ans = rf.rdsub(x.sup, x.inf)
+        return ans
 
     def mid(x):
         if math.fabs(x.inf) > 1. and math.fabs(x.sup) > 1.:
@@ -381,10 +383,10 @@ class interval:
             return interval(math.pi, rf.succ(math.pi))
 
         def sqrt(arg):
-            answer = interval(0.)
-            answer.inf = rf.rdsqrt(arg.inf, rdm.down)
-            answer.sup = rf.rdsqrt(arg.sup, rdm.up)
-            return answer
+            ans = interval(0.)
+            ans.inf = rf.rdsqrt(arg.inf, rdm.down)
+            ans.sup = rf.rdsqrt(arg.sup, rdm.up)
+            return ans
 
         def fabs(arg):
             if arg.inf >= 0.:
@@ -411,26 +413,26 @@ class interval:
             return False
 
         def isfinite(arg):
-            if interval.math.isnan(arg) == True:
+            if interval.math.isnan(arg) is True:
                 return False
-            if interval.math.isinf(arg) == True:
+            if interval.math.isinf(arg) is True:
                 return False
             return True
 
         def pow_point(x, i):
-            answer = interval(1.)
+            ans = interval(1.)
             xp = interval(x)
             while i != 0:
                 if i % 2 != 0:
-                    answer *= xp
-                i =i // 2
+                    ans *= xp
+                i = i // 2
                 xp *= xp
-            return answer
+            return ans
 
         def pow(x, i):
             if i.__class__.__name__ == "interval":
                 return interval.math.exp(i * interval.math.log(x))
-            answer = interval(0.)
+            ans = interval(0.)
             xp = interval(0.)
             if i == 0:
                 return interval(1.)
@@ -439,12 +441,12 @@ class interval:
             else:
                 a = -i
             if a % 2 == 0 and interval.number_in(x, 0):
-                answer = interval.hull(0. ,interval.math.pow_point(x.mag(), a))
+                ans = interval.hull(0., interval.math.pow_point(x.mag(), a))
             else:
-                answer = interval.hull(interval.math.pow_point(x.inf, a), interval.math.pow_point(x.sup, a))
+                ans = interval.hull(interval.math.pow_point(x.inf, a), interval.math.pow_point(x.sup, a))
             if i < 0.:
-                answer = 1. / answer
-            return answer
+                ans = 1. / ans
+            return ans
 
         def ln2():
             eps = sys.float_info.epsilon
@@ -536,7 +538,6 @@ class interval:
                 else:
                     return -float("inf")
             x2, p_i = math.frexp(x)
-            #p = interval(p_i)
             p = p_i
             while x2 > 4. * math.sqrt(2.) - 4.:
                 x2 = x2 * 0.5
@@ -581,9 +582,9 @@ class interval:
             else:
                 return r.sup
 
-        def log(x, base = math.e):
+        def log(x, base=math.e):
             if x.inf < 0.:
-                #TODO: nice error message
+                # TODO: nice error message
                 print("error")
                 return "error"
             t1 = interval.math.log_point(x.inf, -1)
@@ -637,14 +638,13 @@ class interval:
 
         def log1p(x):
             if x.inf < -1.:
-                #TODO: nice error message
+                # TODO: nice error message
                 print("error")
                 return "error"
             else:
                 t1 = interval.math.log1p_point(x.inf, -1)
                 t2 = interval.math.log1p_point(x.sup, 1)
                 return (t1, t2)
-
 
         def sin_origin(x):
             r = interval(0.)
@@ -692,7 +692,7 @@ class interval:
         def sin(x):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
-            if interval.math.isinf(x) == True:
+            if interval.math.isinf(x) is True:
                 return interval.hull(-1., 1.)
             # x is normalized to -pi < x < pi
             x_nor = x
@@ -761,7 +761,7 @@ class interval:
         def cos(x):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
-            if interval.math.isinf(x) == True:
+            if interval.math.isinf(x) is True:
                 return interval.hull(-1, 1)
             x_nor = x
             while x_nor <= -itv_pi.inf or x_nor >= itv_pi.sup:
@@ -792,7 +792,7 @@ class interval:
         def tan(x):
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
-            if interval.math.isinf(x) == True:
+            if interval.math.isinf(x) is True:
                 return interval.hull(-1., 1.)
             x_nor = x
             while x_nor <= -itv_pi.inf or x_nor >= itv_pi.sup:
@@ -933,8 +933,8 @@ class interval:
         def atan2(Iy, Ix):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
-            if interval.zero_in(Ix) == True:
-                if interval.zero_in(Iy) == True:
+            if interval.zero_in(Ix) is True:
+                if interval.zero_in(Iy) is True:
                     return interval(-itv_pi.sup, itv_pi.sup)
                 else:
                     if Iy > 0.:
@@ -946,7 +946,7 @@ class interval:
                         t2 = interval.math.atan2_point(Iy.sup, Ix.sup)
                         return interval(t1.inf, t2.sup)
             else:
-                if interval.zero_in(Iy) == True:
+                if interval.zero_in(Iy) is True:
                     if Ix > 0.:
                         t1 = interval.math.atan2_point(Iy.inf, Ix.inf)
                         t2 = interval.math.atan2_point(Iy.sup, Ix.inf)
@@ -1025,7 +1025,7 @@ class interval:
             t1 = interval.math.cosh_point(x.inf)
             t2 = interval.math.cosh_point(x.sup)
             r = interval.hull(t1, t2)
-            if interval.zero_in(x) == True:
+            if interval.zero_in(x) is True:
                 r = interval.hull(r, 1.)
             return r
 
