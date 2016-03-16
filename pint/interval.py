@@ -1167,7 +1167,12 @@ class interval:
             t2 = interval.math.acosh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
-        # TODO: Fix for too small number
         @staticmethod
         def hypot(x, y):
-            return interval.math.sqrt(x * x + y * y)
+            if x * x == interval(float("inf")) or y * y == interval(float("inf")):
+                max_arg = max(x, y)
+                min_arg = min(x, y)
+                ans = max_arg * interval.math.sqrt(1. + (max_arg / min_arg) ** 2)
+                return ans
+            else:
+                return interval.math.sqrt(x * x + y * y)
