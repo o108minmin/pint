@@ -192,16 +192,16 @@ class interval:
         return ans
 
     @staticmethod
-    def format(self, *format_spec):
+    def format(arg, *format_spec):
         if len(format_spec) != 0 and format_spec[0] != '':
-            ans_inf = format(self.inf, format_spec[0])
-            ans_sup = format(self.sup, format_spec[0])
-        elif self.format_spec != '':
-            ans_inf = format(self.inf, self.format_spec)
-            ans_sup = format(self.sup, self.format_spec)
+            ans_inf = format(arg.inf, format_spec[0])
+            ans_sup = format(arg.sup, format_spec[0])
+        elif arg.format_spec != '':
+            ans_inf = format(arg.inf, arg.format_spec)
+            ans_sup = format(arg.sup, arg.format_spec)
         else:
-            ans_inf = format(self.inf)
-            ans_sup = format(self.sup)
+            ans_inf = format(arg.inf)
+            ans_sup = format(arg.sup)
         return '[' + ans_inf + ',' + ans_sup + ']'
 
     def __format__(self, *format_spec):
@@ -388,11 +388,15 @@ class interval:
             tmp2 = y.sup
         return interval(tmp1, tmp2)
 
-    def from_fraction(*args):
-        pass
-
     # math functions
     class math:
+        '''
+        math functions
+
+        calling exsample
+
+        interval.math.sqrt(interval(2.))
+        '''
 
         @staticmethod
         def e():
