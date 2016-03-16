@@ -165,7 +165,7 @@ class interval:
                 elif arg < 0.:
                     ans.inf = rf.rddiv(self.sup, arg, rdm.down)
                     ans.sup = rf.rddiv(self.inf, arg, rdm.up)
-                else:
+                elif arg == 0.:
                     sys.stderr.write("ZeroDivisionError ")
                     sys.exit()
         else:
@@ -185,7 +185,7 @@ class interval:
             else:
                 ans.inf = rf.rddiv(arg, self.inf, rdm.down)
                 ans.sup = rf.rddiv(arg, self.sup, rdm.up)
-        else:
+        elif self == 0.:
             sys.stderr.write("ZeroDivisionError ")
             sys.exit()
         return ans
@@ -512,7 +512,7 @@ class interval:
                     x_i += 1.
             r = interval(1.)
             y = interval(1.)
-            i = 0
+            i = 1
             while True:
                 y *= x_f
                 y /= interval(i)
@@ -533,9 +533,33 @@ class interval:
             tmp2 = interval.math.exp_point(x.sup)
             return interval(tmp1.inf, tmp2.sup)
 
-        # TODO: Fix lazy expm1 (significant loss of precision)
+        def expm1_origin(x):
+            ans = interval(0.)
+            y = interval(1.)
+            sqrt_e = interval.math.sqrt(interval.math.e())
+            re = interval((1. / sqrt_e).inf, sqrt_e.sup)
+            i = 1.
+            while True:
+                y *= x
+                y /= i
+                if y.mag() * re.sup < sys.float_info.epsilon:
+                    ans += y * re
+                    break
+                else:
+                    ans += y
+                i += 1.
+            return ans
+
+        def expm1_point(x):
+            if x >= -0.5 and x <= 0.5:
+                return interval.math.expm1_origin(x)
+            else:
+                return interval.math.exp_point(x) - 1.
+
         def expm1(x):
-            return interval.math.exp(x) - 1.
+            ans_inf = interval.math.expm1_point(x.inf)
+            ans_sup = interval.math.expm1_point(x.sup)
+            return interval(ans_inf.inf, ans_sup.sup)
 
         def ldexp(x, i):
             return x * (2 ** i)
