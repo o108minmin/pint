@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from .core import roundmode as rdm
@@ -393,18 +394,22 @@ class interval:
     # math functions
     class math:
 
+        @staticmethod
         def e():
             return interval(math.e, rf.succ(math.e))
 
+        @staticmethod
         def pi():
             return interval(math.pi, rf.succ(math.pi))
 
+        @staticmethod
         def sqrt(arg):
             ans = interval(0.)
             ans.inf = rf.rdsqrt(arg.inf, rdm.down)
             ans.sup = rf.rdsqrt(arg.sup, rdm.up)
             return ans
 
+        @staticmethod
         def fabs(arg):
             if arg.inf >= 0.:
                 return arg
@@ -415,6 +420,7 @@ class interval:
                 tmp = arg.sup
             return interval(0., tmp)
 
+        @staticmethod
         def isnan(arg):
             if arg.inf != arg.inf:
                 return True
@@ -422,6 +428,7 @@ class interval:
                 return True
             return False
 
+        @staticmethod
         def isinf(arg):
             if arg.inf == float("inf") or arg.inf == float("-inf"):
                 return True
@@ -429,6 +436,7 @@ class interval:
                 return True
             return False
 
+        @staticmethod
         def isfinite(arg):
             if interval.math.isnan(arg) is True:
                 return False
@@ -436,6 +444,7 @@ class interval:
                 return False
             return True
 
+        @staticmethod
         def pow_point(x, i):
             ans = interval(1.)
             xp = interval(x)
@@ -446,6 +455,7 @@ class interval:
                 xp *= xp
             return ans
 
+        @staticmethod
         def pow(x, i):
             if i.__class__.__name__ == "interval":
                 return interval.math.exp(i * interval.math.log(x))
@@ -465,6 +475,7 @@ class interval:
                 ans = 1. / ans
             return ans
 
+        @staticmethod
         def ln2():
             eps = sys.float_info.epsilon
             x2 = interval.math.sqrt(interval.math.sqrt(interval(2.)))
@@ -487,6 +498,7 @@ class interval:
             tmp = tmp * 4
             return tmp
 
+        @staticmethod
         def exp_point(x):
             eps = sys.float_info.epsilon
             if x == float("inf"):
@@ -528,6 +540,7 @@ class interval:
                 r /= interval.math.pow(interval.math.e(), -x_i)
             return r
 
+        @staticmethod
         def exp(x):
             tmp1 = interval.math.exp_point(x.inf)
             tmp2 = interval.math.exp_point(x.sup)
@@ -550,20 +563,24 @@ class interval:
                 i += 1.
             return ans
 
+        @staticmethod
         def expm1_point(x):
             if x >= -0.5 and x <= 0.5:
                 return interval.math.expm1_origin(x)
             else:
                 return interval.math.exp_point(x) - 1.
 
+        @staticmethod
         def expm1(x):
             ans_inf = interval.math.expm1_point(x.inf)
             ans_sup = interval.math.expm1_point(x.sup)
             return interval(ans_inf.inf, ans_sup.sup)
 
+        @staticmethod
         def ldexp(x, i):
             return x * (2 ** i)
 
+        @staticmethod
         def log_point(x, rd):
             eps = sys.float_info.epsilon
             itv_sqrt2 = interval.math.sqrt(interval(2.))
@@ -621,6 +638,7 @@ class interval:
             else:
                 return r.sup
 
+        @staticmethod
         def log(x, base=math.e):
             if x.inf < 0.:
                 sys.stderr.write("math domain error ")
@@ -634,12 +652,15 @@ class interval:
             else:
                 return interval(t1, t2)
 
+        @staticmethod
         def log2(x):
             return interval.math.log(x, 2)
 
+        @staticmethod
         def log10(x):
             return interval.math.log(x, 10)
 
+        @staticmethod
         def log1p_origin(x):
             eps = sys.float_info.epsilon
             cinv = 1. / interval.hull(x + interval(1.), 1.)
@@ -659,6 +680,7 @@ class interval:
                 i += 1
             return r
 
+        @staticmethod
         def log1p_point(x, rd):
             f3m2sqrt2 = 3. - 2. * math.sqrt(2.)
             if x >= -f3m2sqrt2 and x <= f3m2sqrt2:
@@ -674,6 +696,7 @@ class interval:
                 else:
                     return interval.math.log_point(tmp.sup, 1)
 
+        @staticmethod
         def log1p(x):
             if x.inf < -1.:
                 sys.stderr.write("math domain error ")
@@ -683,6 +706,7 @@ class interval:
                 t2 = interval.math.log1p_point(x.sup, 1)
                 return (t1, t2)
 
+        @staticmethod
         def sin_origin(x):
             r = interval(0.)
             y = interval(1.)
@@ -704,6 +728,7 @@ class interval:
                 i = i + 1
             return r
 
+        @staticmethod
         def sin_point(x):
             itv_pi = interval.math.pi()
             mid_pi = interval.mid(itv_pi)
@@ -726,6 +751,7 @@ class interval:
                 return interval.math.cos_origin(x - itv_pi * 0.5)
             return interval.math.sin_origin(itv_pi - x)
 
+        @staticmethod
         def sin(x):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
@@ -753,6 +779,7 @@ class interval:
                 r = interval.hull(r, -1)
             return interval.intersect(r, interval(-1, 1))
 
+        @staticmethod
         def cos_origin(x):
             r = interval(1.)
             y = interval(1.)
@@ -774,6 +801,7 @@ class interval:
                 i = i + 1
             return r
 
+        @staticmethod
         def cos_point(x):
             itv_pi = interval.math.pi()
             mid_pi = interval.mid(itv_pi)
@@ -795,6 +823,7 @@ class interval:
                 return -interval.math.sin_origin(x - itv_pi * 0.5)
             return -interval.math.cos_origin(itv_pi - x)
 
+        @staticmethod
         def cos(x):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
@@ -821,11 +850,13 @@ class interval:
                 r = interval.hull(r, -1.)
             return interval.intersect(r, interval(-1., 1.))
 
+        @staticmethod
         def tan_point(x):
             tmp1 = interval.math.sin_point(interval(x))
             tmp2 = interval.math.cos_point(interval(x))
             return tmp1 / tmp2
 
+        @staticmethod
         def tan(x):
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
@@ -841,6 +872,7 @@ class interval:
             tmp2 = interval.math.tan_point(x_nor.sup)
             return interval(tmp1.inf, tmp2.sup)
 
+        @staticmethod
         def atan_origin(x):
             r = interval(0.)
             y = interval(1.)
@@ -861,6 +893,7 @@ class interval:
                 i += 1.
             return r
 
+        @staticmethod
         def atan_point(x):
             itv_pi = interval.math.pi()
             itv_x = interval(x)
@@ -879,11 +912,13 @@ class interval:
                 return itv_pi * 0.25 + interval.math.atan_origin(t1 / t2)
             return itv_pi * 0.5 - interval.math.atan_origin(1. / itv_x)
 
+        @staticmethod
         def atan(x):
             t1 = interval.math.atan_point(x.inf)
             t2 = interval.math.atan_point(x.sup)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def asin_point(x):
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
@@ -907,11 +942,13 @@ class interval:
                     t2 = 1. - interval(x)
                     return interval.math.atan(x / interval.math(t1 * t2))
 
+        @staticmethod
         def asin(x):
             t1 = interval.math.asin_point(x.inf)
             t2 = interval.math.asin_point(x.sup)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def pih_m_atan_point(x):
             itv_pi = interval.math.pi()
             if x.inf < -(math.sqrt(2.) + 1.):
@@ -926,6 +963,7 @@ class interval:
                 return itv_pi * 0.25 - interval.math.atan_origin(tmp)
             return interval.math.atan_origin(1. / x)
 
+        @staticmethod
         def acos_point(x):
             itv_pi = interval.math.pi()
             if x < -1. or x > 1.:
@@ -946,11 +984,13 @@ class interval:
                     tmp = interval.math.sqrt((1. + x) * (1. - interval(x)))
                     return interval.math.pih_m_atan_point(x / tmp)
 
+        @staticmethod
         def acos(x):
             t1 = interval.math.acos_point(x.sup)
             t2 = interval.math.acos_point(x.inf)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def atan2_point(y, x):
             itv_pi = interval.math.pi()
             itv_x = interval(x)
@@ -966,6 +1006,7 @@ class interval:
                     return -itv_pi + interval.math.atan(itv_x / itv_y)
             return -itv_pi * 0.5 - interval.math.atan(itv_x / itv_y)
 
+        @staticmethod
         def atan2(Iy, Ix):
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
@@ -1017,6 +1058,7 @@ class interval:
                             t2 = interval.math.atan2_point(Iy.inf, Ix.sup)
                             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def sinh_origin(x):
             itv_exph = interval.math.e()
             itv_coshh = (itv_exph + 1. / itv_exph) * 0.5
@@ -1037,6 +1079,7 @@ class interval:
                 i += 1
             return r
 
+        @staticmethod
         def sinh_point(x):
             if x >= -0.5 and x <= 0.5:
                 return sinh_origin(x)
@@ -1046,17 +1089,20 @@ class interval:
                 tmp = interval.math.exp_point(x)
                 return (tmp - 1. / tmp) * 0.5
 
+        @staticmethod
         def sinh(x):
             t1 = interval.math.sinh_point(x.inf)
             t2 = interval.math.sinh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def cosh_point(x):
             if x == -float("inf"):
                 return interval(sys.float_info.max, float("inf"))
             tmp = interval.math.exp_point(x)
             return (tmp + 1. / tmp) * 0.5
 
+        @staticmethod
         def cosh(x):
             t1 = interval.math.cosh_point(x.inf)
             t2 = interval.math.cosh_point(x.sup)
@@ -1065,6 +1111,7 @@ class interval:
                 r = interval.hull(r, 1.)
             return r
 
+        @staticmethod
         def tanh_point(x):
             if x > 0.5:
                 return 1. - 2. / (1. + interval.math.exp_point(2. * x))
@@ -1073,11 +1120,13 @@ class interval:
             else:
                 return interval.math.sinh_origin(x) / interval.math.cosh_point(x)
 
+        @staticmethod
         def tanh(x):
             t1 = interval.math.tanh_point(x.inf)
             t2 = interval.math.tanh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def asinh_point(x):
             if x < -0.5:
                 tmp = interval.math.sqrt(1. + interval(x) * x)
@@ -1088,11 +1137,13 @@ class interval:
             else:
                 return interval.math.sqrt(x + interval.math.sqrt(1. + interval(x) * x))
 
+        @staticmethod
         def asinh(x):
             t1 = interval.math.asinh_point(x.inf)
             t2 = interval.math.asinh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
+        @staticmethod
         def acosh_point(x):
             if x < -0.5:
                 sys.stderr.write("math domain error ")
@@ -1106,11 +1157,13 @@ class interval:
             else:
                 return interval.math.log(x + interval.math.sqrt(interval(x) * x - 1.))
 
+        @staticmethod
         def acosh(x):
             t1 = interval.math.acosh_point(x.inf)
             t2 = interval.math.acosh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
         # TODO: Fix for too small number
+        @staticmethod
         def hypot(x, y):
             return interval.math.sqrt(x * x + y * y)
