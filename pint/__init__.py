@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from .core import roundmode,roundfloat
 from .interval import interval
 from .vmath import vmath
