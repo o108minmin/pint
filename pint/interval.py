@@ -564,7 +564,6 @@ class interval:
         def ldexp(x, i):
             return x * (2 ** i)
 
-        # TODO: Fix log, log2 and log10 for x(double)
         def log_point(x, rd):
             eps = sys.float_info.epsilon
             itv_sqrt2 = interval.math.sqrt(interval(2.))
