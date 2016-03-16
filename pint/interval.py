@@ -108,9 +108,6 @@ class interval:
                 elif self.sup <= 0.:
                     ans.inf = rf.rdmul(self.sup, arg.sup, rdm.down)
                     ans.sup = rf.rdmul(self.inf, arg.inf, rdm.up)
-            else:
-                # TODO: nice error message
-                print("error")
         else:
             if arg >= 0.:
                 ans.inf = rf.rdmul(self.inf, arg, rdm.down)
@@ -118,9 +115,6 @@ class interval:
             elif arg < 0.:
                 ans.inf = rf.rdmul(self.sup, arg, rdm.down)
                 ans.sup = rf.rdmul(self.inf, arg, rdm.up)
-            else:
-                # TODO: nice error message
-                print("error")
         return ans
 
     def __imul__(self, arg):
@@ -172,9 +166,10 @@ class interval:
                     ans.inf = rf.rddiv(self.sup, arg, rdm.down)
                     ans.sup = rf.rddiv(self.inf, arg, rdm.up)
                 else:
-                    # TODO: nice error message
-                    print("error")
-
+                    sys.stderr.write("ZeroDivisionError ")
+                    sys.exit()
+        else:
+            ans = interval.__truediv__(self, interval(arg))
         return ans
 
     def __itruediv__(self, arg):
@@ -191,8 +186,8 @@ class interval:
                 ans.inf = rf.rddiv(arg, self.inf, rdm.down)
                 ans.sup = rf.rddiv(arg, self.sup, rdm.up)
         else:
-            # TODO: nice error message
-            print("error")
+            sys.stderr.write("ZeroDivisionError ")
+            sys.exit()
         return ans
 
     @staticmethod
@@ -581,7 +576,6 @@ class interval:
                 else:
                     x2 = tmp.sup
                 p -= 0.5
-
             x2m1 = x2 - 1.
             cinv = 1. / interval.hull(x2, 1.)
             r = interval(0.)
@@ -606,9 +600,8 @@ class interval:
 
         def log(x, base=math.e):
             if x.inf < 0.:
-                # TODO: nice error message
-                print("error")
-                return "error"
+                sys.stderr.write("math domain error ")
+                sys.exit()
             t1 = interval.math.log_point(x.inf, -1)
             t2 = interval.math.log_point(x.sup, 1)
             if base != math.e:
@@ -660,9 +653,8 @@ class interval:
 
         def log1p(x):
             if x.inf < -1.:
-                # TODO: nice error message
-                print("error")
-                return "error"
+                sys.stderr.write("math domain error ")
+                sys.exit()
             else:
                 t1 = interval.math.log1p_point(x.inf, -1)
                 t2 = interval.math.log1p_point(x.sup, 1)
@@ -873,8 +865,8 @@ class interval:
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
             if x < -1. or x > 1.:
-                # TODO: nice erroe message
-                return "error"
+                sys.stderr.write("math domain error ")
+                sys.exit()
             if x == 1.:
                 return itv_pih
             if x == -1.:
@@ -914,9 +906,8 @@ class interval:
         def acos_point(x):
             itv_pi = interval.math.pi()
             if x < -1. or x > 1.:
-                # TODO: nice erroe message
-                print("error")
-                return "error"
+                sys.stderr.write("math domain error ")
+                sys.exit()
             elif x == 1.:
                 return interval(0.)
             elif x == -1.:
@@ -1081,9 +1072,9 @@ class interval:
 
         def acosh_point(x):
             if x < -0.5:
-                # TODO: nice error message
-                print("error")
-                return "error"
+                sys.stderr.write("math domain error ")
+                sys.exit()
+
             elif x == 1.:
                 return interval(0.)
             elif x <= 1.5:
