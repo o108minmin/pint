@@ -5,7 +5,7 @@ from .core import roundmode as rdm
 from .core import roundfloat as rf
 import math
 import sys
-
+from .floattools import stringtofraction
 
 class interval:
     inf = 0.
@@ -23,7 +23,7 @@ class interval:
                     self.inf = args[0].inf
                     self.sup = args[0].sup
                 elif args[0].__class__.__name__ == "str":
-                    a0 = rf.stringtofraction(args[0])
+                    a0 = stringtofraction(args[0])
                     self.inf = rf.rddiv(a0.numerator, a0.denominator, rdm.down)
                     self.sup = rf.rddiv(a0.numerator, a0.denominator, rdm.up)
                 else:
@@ -33,7 +33,7 @@ class interval:
                 if args[0].__class__.__name__ == "interval":
                     self.sup = args[1].sup
                 if args[1].__class__.__name__ == "str":
-                    a1 = rf.stringtofraction(args[1])
+                    a1 = stringtofraction(args[1])
                     self.sup = rf.rddiv(a1.numerator, a1.denominator, rdm.up)
                 else:
                     self.sup = args[1]
