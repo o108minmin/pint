@@ -619,10 +619,16 @@ class interval:
 
         @staticmethod
         def inf():
+            '''
+            -> interval
+            '''
             return interval(float('inf'))
 
         @staticmethod
         def nan():
+            '''
+            -> interval
+            '''
             return interval(float('nan'))
 
         @staticmethod
@@ -638,6 +644,10 @@ class interval:
 
         @staticmethod
         def fabs(arg):
+            '''
+            arg : interval
+            -> interval
+            '''
             if arg.inf >= 0.:
                 return arg
             if arg.sup <= 0.:
@@ -649,6 +659,17 @@ class interval:
 
         @staticmethod
         def isnan(arg):
+            '''
+            arg : interval
+            -> bool
+
+            (jp)
+            nanが端点に含まれるか判定します。
+
+            (en)
+            Check arg.inf or arg.sup is nan or not.
+
+            '''
             if arg.inf != arg.inf:
                 return True
             if arg.sup != arg.sup:
@@ -657,6 +678,16 @@ class interval:
 
         @staticmethod
         def isinf(arg):
+            '''
+            arg : interval
+            -> bool
+
+            (jp)
+            無限大が端点に含まれるか断定します。
+
+            (en)
+            Check arg.inf or arg.sup is infinite or not.
+            '''
             if arg.inf == float("inf") or arg.inf == float("-inf"):
                 return True
             if arg.sup == float("inf") or arg.sup == float("-inf"):
@@ -665,6 +696,16 @@ class interval:
 
         @staticmethod
         def isfinite(arg):
+            '''
+            arg : interval
+            -> bool
+
+            (jp)
+            無限大とnanが端点に含まれないか判定します。
+
+            (en)
+            Check not(isinf or isfinite)
+            '''
             if interval.math.isnan(arg) is True:
                 return False
             if interval.math.isinf(arg) is True:
@@ -673,6 +714,17 @@ class interval:
 
         @staticmethod
         def pow_point(x, i):
+            '''
+            x : float
+            i : int
+            -> interval
+
+            (jp)
+            powを補助する関数
+
+            (en)
+            supporting function for pow
+            '''
             ans = interval(1.)
             xp = interval(x)
             while i != 0:
@@ -727,6 +779,16 @@ class interval:
 
         @staticmethod
         def exp_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            exp_pointを補助する関数
+
+            (en)
+            supporting function for exp_point
+            '''
             eps = sys.float_info.epsilon
             if x == float("inf"):
                 return interval(sys.float_info.max, float("inf"))
@@ -774,6 +836,17 @@ class interval:
             return interval(tmp1.inf, tmp2.sup)
 
         def expm1_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            expm1_pointを補助する関数
+
+            (en)
+            supporting function for exp_point
+            '''
+
             ans = interval(0.)
             y = interval(1.)
             sqrt_e = interval.math.sqrt(interval.math.e())
@@ -792,6 +865,17 @@ class interval:
 
         @staticmethod
         def expm1_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            expm1を補助する関数
+
+            (en)
+            supporting function for expm1
+            '''
+
             if x >= -0.5 and x <= 0.5:
                 return interval.math.expm1_origin(x)
             else:
@@ -799,6 +883,7 @@ class interval:
 
         @staticmethod
         def expm1(x):
+
             ans_inf = interval.math.expm1_point(x.inf)
             ans_sup = interval.math.expm1_point(x.sup)
             return interval(ans_inf.inf, ans_sup.sup)
@@ -809,6 +894,18 @@ class interval:
 
         @staticmethod
         def log_point(x, rd):
+            '''
+            x : float
+            rd : int
+            -> interval
+
+            (jp)
+            logを補助する関数
+
+            (en)
+            supporting function for log
+            '''
+
             eps = sys.float_info.epsilon
             itv_sqrt2 = interval.math.sqrt(interval(2.))
             if x == float("inf"):
@@ -889,6 +986,17 @@ class interval:
 
         @staticmethod
         def log1p_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            log_pointを補助する関数
+
+            (en)
+            supporting function for log1p_point
+            '''
+
             eps = sys.float_info.epsilon
             cinv = 1. / interval.hull(x + interval(1.), 1.)
             r = interval(0.)
@@ -909,6 +1017,18 @@ class interval:
 
         @staticmethod
         def log1p_point(x, rd):
+            '''
+            x : float
+            rd : int
+            -> interval
+
+            (jp)
+            log1pを補助する関数
+
+            (en)
+            supporting function for log1p
+            '''
+
             f3m2sqrt2 = 3. - 2. * math.sqrt(2.)
             if x >= -f3m2sqrt2 and x <= f3m2sqrt2:
                 tmp = interval.math.log1p_origin(x)
@@ -935,6 +1055,17 @@ class interval:
 
         @staticmethod
         def sin_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            sin_pointを補助する関数
+
+            (en)
+            supporting function for sin_point
+            '''
+
             r = interval(0.)
             y = interval(1.)
             i = 1
@@ -957,6 +1088,17 @@ class interval:
 
         @staticmethod
         def sin_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            sinを補助する関数
+
+            (en)
+            supporting function for sin
+            '''
+
             itv_pi = interval.math.pi()
             mid_pi = interval.mid(itv_pi)
             if x.inf >= mid_pi:
@@ -1008,6 +1150,17 @@ class interval:
 
         @staticmethod
         def cos_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            cos_pointを補助する関数
+
+            (en)
+            supporting function for cos_point
+            '''
+
             r = interval(1.)
             y = interval(1.)
             i = 1
@@ -1030,6 +1183,17 @@ class interval:
 
         @staticmethod
         def cos_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            cosを補助する関数
+
+            (en)
+            supporting function for cos
+            '''
+
             itv_pi = interval.math.pi()
             mid_pi = interval.mid(itv_pi)
             if x.inf >= mid_pi:
@@ -1079,6 +1243,17 @@ class interval:
 
         @staticmethod
         def tan_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            tanを補助する関数
+
+            (en)
+            supporting function for tan
+            '''
+
             tmp1 = interval.math.sin_point(interval(x))
             tmp2 = interval.math.cos_point(interval(x))
             return tmp1 / tmp2
@@ -1101,6 +1276,17 @@ class interval:
 
         @staticmethod
         def atan_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            atan_pointを補助する関数
+
+            (en)
+            supporting function for atan_point
+            '''
+
             r = interval(0.)
             y = interval(1.)
             i = 1.
@@ -1122,6 +1308,17 @@ class interval:
 
         @staticmethod
         def atan_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            atanを補助する関数
+
+            (en)
+            supporting function for atan
+            '''
+
             itv_pi = interval.math.pi()
             itv_x = interval(x)
             if x < -(math.sqrt(2.) + 1.):
@@ -1147,6 +1344,17 @@ class interval:
 
         @staticmethod
         def asin_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            asinを補助する関数
+
+            (en)
+            supporting function for asin
+            '''
+
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
             if x < -1. or x > 1.:
@@ -1177,6 +1385,17 @@ class interval:
 
         @staticmethod
         def pih_m_atan_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            acos_pointを補助する関数
+
+            (en)
+            supporting function for acos_point
+            '''
+
             itv_pi = interval.math.pi()
             if x.inf < -(math.sqrt(2.) + 1.):
                 return itv_pi + interval.math.atan_origin(1. / x)
@@ -1192,6 +1411,17 @@ class interval:
 
         @staticmethod
         def acos_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            acosを補助する関数
+
+            (en)
+            supporting function for acos
+            '''
+
             itv_pi = interval.math.pi()
             if x < -1. or x > 1.:
                 sys.stderr.write("math domain error ")
@@ -1219,6 +1449,18 @@ class interval:
 
         @staticmethod
         def atan2_point(y, x):
+            '''
+            y : float
+            x : int
+            -> interval
+
+            (jp)
+            atan2を補助する関数
+
+            (en)
+            supporting function for atan2
+            '''
+
             itv_pi = interval.math.pi()
             itv_x = interval(x)
             itv_y = interval(y)
@@ -1287,6 +1529,17 @@ class interval:
 
         @staticmethod
         def sinh_origin(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            sinh_pointを補助する関数
+
+            (en)
+            supporting function for sin_point
+            '''
+
             itv_exph = interval.math.e()
             itv_coshh = (itv_exph + 1. / itv_exph) * 0.5
             r = interval(0.)
@@ -1308,6 +1561,17 @@ class interval:
 
         @staticmethod
         def sinh_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            sinhを補助する関数
+
+            (en)
+            supporting function for sinh
+            '''
+
             if x >= -0.5 and x <= 0.5:
                 return sinh_origin(x)
             else:
@@ -1324,6 +1588,17 @@ class interval:
 
         @staticmethod
         def cosh_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            coshを補助する関数
+
+            (en)
+            supporting function for cosh
+            '''
+
             if x == -float("inf"):
                 return interval(sys.float_info.max, float("inf"))
             tmp = interval.math.exp_point(x)
@@ -1340,6 +1615,17 @@ class interval:
 
         @staticmethod
         def tanh_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            tanhを補助する関数
+
+            (en)
+            supporting function for tanh
+            '''
+
             if x > 0.5:
                 return 1. - 2. / (1. + interval.math.exp_point(2. * x))
             elif x < -0.5:
@@ -1355,6 +1641,17 @@ class interval:
 
         @staticmethod
         def asinh_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            asinhを補助する関数
+
+            (en)
+            supporting function for asinh
+            '''
+
             if x < -0.5:
                 tmp = interval.math.sqrt(1. + interval(x) * x)
                 return -interval.math.log(-x + interval.math.sqrt(1. + interval(x) * x))
@@ -1372,6 +1669,17 @@ class interval:
 
         @staticmethod
         def acosh_point(x):
+            '''
+            x : float
+            -> interval
+
+            (jp)
+            acoshを補助する関数
+
+            (en)
+            supporting function for acosh
+            '''
+
             if x < -0.5:
                 sys.stderr.write("math domain error ")
                 sys.exit()
