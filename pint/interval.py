@@ -8,6 +8,38 @@ import sys
 from .floattools import stringtofraction
 
 class interval:
+    '''
+    (jp)
+    区間型クラス
+    メンバー変数
+        - inf
+            infは区間の下端である
+        - sup
+            supは区間の上端である
+        - format_spec
+            format()を使用する際の第二引数
+            format(self, format_spec)のように呼び出される。
+
+            self.format_spec = '.32g'
+
+            のように指定する。
+    注意点
+        - 端点にはfloat型しか取ることができない
+
+
+    (en)
+    interval class
+    member variables
+        - inf
+            inf is infimum of the interval
+        - sup
+            sup is supremum of the interval
+        - format_spec
+            The second parameter of format()
+    warning
+        - This class is only for float class
+    '''
+
     inf = 0.
     sup = 0.
     format_spec = ''
