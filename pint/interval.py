@@ -42,9 +42,9 @@ class interval:
         '''
         (jp)
         引数の数は2つまで指定できる。引数がない場合、初期値が0として扱われる。
-        interval()
-        interval(1.)
-        interval(1., 2.)
+        interval() := infとsupは0
+        interval(1.) := infとsupは1
+        interval(1., 2.) := infは1、supは2
 
         引数にstring型を使用すると、正確に初期値を含んだ区間を生成する。
         interval("0.1")
@@ -53,9 +53,9 @@ class interval:
         (en)
         This class can use until two parameters.
         If the number of parameters is zero, __init__ is initialized with zero.
-        interval()
-        interval(1.)
-        interval(1., 2.)
+        interval() := inf and sup is 0
+        interval(1.) := inf and sup are 1
+        interval(1., 2.) := inf is 1 and sup is 2
 
         If the class of parameters is string, __init__ generates correct interval.
         interval("0.1")
@@ -348,11 +348,26 @@ class interval:
                 return a > b
 
     # interval tools
-    def hull(a, b):
-        if a.__class__.__name__ != "interval":
-            a = interval(a)
-        if b.__class__.__name__ != "interval":
-            b = interval(b)
+    def hull(self, arg):
+        '''
+        self : interval
+        arg  : interval
+        -> interval
+
+        (jp)
+        selfとargを含んだ区間を返す。
+
+        (en)
+        Generate interval contains self and arg.
+        '''
+        if self.__class__.__name__ != "interval":
+            a = interval(self)
+        else:
+            a = self
+        if arg.__class__.__name__ != "interval":
+            b = interval(arg)
+        else:
+            b = arg
         tmp1 = a.inf
         if b.inf < tmp1:
             tmp1 = b.inf
@@ -361,78 +376,203 @@ class interval:
             tmp2 = b.sup
         return interval(tmp1, tmp2)
 
+    @staticmethod
     def whole():
-        return interval(float("inf"), -float("inf"))
+        '''
+        -> bool
 
-    def subset(x, y):
-        if y.inf <= x.inf and x.sup <= y.sup:
+        (jp)
+        負の無限大と正の無限大を両端に持つ区間を返す。
+
+        (en)
+        Generate interval(-float("inf"), float("inf"))
+        '''
+        return interval(-float("inf"), float("inf"))
+
+    def subset(self, arg):
+        '''
+        self : interval
+        arg  : interval
+        -> bool
+
+        (jp)
+        argがselfを含んでいるかどうか調べる
+
+        (en)
+        Check, do arg contain self ?
+        '''
+        if arg.inf <= self.inf and self.sup <= arg.sup:
             return True
         else:
             return False
 
-    def proper_subset(x, y):
-        if interval.subset(x, y) and (y.inf < x.inf or x.sup < y.sup):
+    def proper_subset(self, arg):
+        '''
+        self : interval
+        arg  : interval
+        -> bool
+
+        (jp)
+        argがselfを含んでいるか　と　(arg.inf < self.inf or self.sup < arg.sup)
+        を調べる。
+
+        (en)
+        Check, is self subset of arg ? and (arg.inf < self.inf or self.sup < arg.sup) ?
+        '''
+        if interval.subset(self, arg) and (arg.inf < self.inf or self.sup < arg.sup):
             return True
         else:
             return False
 
-    def number_in(x, number):
-        if x.inf < number and number < x.sup:
+    def number_in(self, number):
+        '''
+        self   : interval
+        number : float
+        -> bool
+
+        (jp)
+        selfが引数を含むか調べる。
+
+        (en)
+        Check, do self contain number ?
+        '''
+        if self.inf < number and number < self.sup:
             return True
         else:
             return False
 
-    def zero_in(x):
-        if x.inf < 0. and 0. < x.sup:
+    def zero_in(self):
+        '''
+        self : interval
+        -> bool
+
+        (jp)
+        selfが0を含むか調べる。
+
+        (en)
+        Check, do self contain 0 ?
+        '''
+        if self.inf < 0. and 0. < self.sup:
             return True
         else:
             return False
 
-    def overlap(x, y):
-        tmp1 = x.inf
-        if y.inf > tmp1:
-            tmp1 = y.inf
-        tmp2 = x.sup
-        if y.sup < tmp2:
-            tmp2 = y.sup
+    def overlap(self, arg):
+        '''
+        self : interval
+        arg  : interval
+        -> bool
+
+        (jp)
+        selfとargが重なる区間が存在するか調べる。
+
+        (en)
+        Check, Exist of self and arg contain interval.
+        '''
+        tmp1 = self.inf
+        if arg.inf > tmp1:
+            tmp1 = arg.inf
+        tmp2 = self.sup
+        if arg.sup < tmp2:
+            tmp2 = arg.sup
         if tmp1 <= tmp2:
             return True
         else:
             return False
 
-    def norm(x):
-        if x.inf >= 0.:
-            return x.sup
-        if x.sup <= 0.:
-            return -x.inf
-        tmp = -x.inf
-        if x.sup > tmp:
-            tmp = x.sup
+    def norm(self):
+        '''
+        self : interval
+        -> float
+
+        (jp)
+        selfのmaxノルムを返す。
+
+        (en)
+        Return max norm of self.
+        '''
+        if self.inf >= 0.:
+            return self.sup
+        if self.sup <= 0.:
+            return -self.inf
+        tmp = -self.inf
+        if self.sup > tmp:
+            tmp = self.sup
         return tmp
 
-    def mag(x):
-        return interval.norm(x)
+    def mag(self):
+        '''
+        self : interval
+        -> float
 
-    def width(x):
-        ans = rf.rdsub(x.sup, x.inf)
+        (jp)
+        normと同じ。
+
+        (en)
+        Same as interval.norm().
+        '''
+        return interval.norm(self)
+
+    def width(self):
+        '''
+        self : interval
+        -> float
+
+        (jp)
+        selfの区間の幅を返す。
+
+        (en)
+        Return width of self.
+        '''
+        ans = rf.rdsub(self.sup, self.inf)
         return ans
 
-    def mid(x):
-        if math.fabs(x.inf) > 1. and math.fabs(x.sup) > 1.:
-            return x.inf * 0.5 + x.sup * 0.5
+    def mid(self):
+        '''
+        self : interval
+        -> float
+
+        (jp)
+        selfの中点を返す。
+
+        (en)
+        Return mid point of self.
+        '''
+        if math.fabs(self.inf) > 1. and math.fabs(self.sup) > 1.:
+            return self.inf * 0.5 + self.sup * 0.5
         else:
-            return (x.inf + x.sup) * 0.5
+            return (self.inf + self.sup) * 0.5
 
-    def median(x):
-        return mid(x)
+    def median(self):
+        '''
+        self : interval
+        -> float
 
-    def intersect(x, y):
-        tmp1 = x.inf
-        if y.inf > tmp1:
-            tmp1 = y.inf
-        tmp2 = x.sup
-        if y.sup < tmp2:
-            tmp2 = y.sup
+        (jp)
+        midと同じ。
+
+        (en)
+        Same as interval.mid().
+        '''
+        return mid(self)
+
+    def intersect(self, arg):
+        '''
+        self : interval
+        -> interval
+
+        (jp)
+        selfとargの重なる部分を返す。
+
+        (en)
+        Return self and arg contain interval.
+        '''
+        tmp1 = self.inf
+        if arg.inf > tmp1:
+            tmp1 = arg.inf
+        tmp2 = self.sup
+        if arg.sup < tmp2:
+            tmp2 = arg.sup
         return interval(tmp1, tmp2)
 
     # math functions
