@@ -578,23 +578,59 @@ class interval:
     # math functions
     class math:
         '''
-        math functions
+        math functions for interval
+            These functions are same as python's math module.
+            However some functions are not used for float.
+            Therefore these functions are not contained
 
-        calling exsample
+            - not supporting functions
+                - floor
+                - ceil
+                - fmod
+                - frexp
+                - fsum
+                - isclose
+                - trunc
+                - degrees
+                - radians
+                - gammma
+                - lgamma
+                - erf
+                - erfc
+                - gcd(python 3.5)
 
-        interval.math.sqrt(interval(2.))
+        calling exsample.
+            interval.math.sqrt(interval(2.))
         '''
 
         @staticmethod
         def e():
+            '''
+            -> interval
+            '''
             return interval(math.e, rf.succ(math.e))
 
         @staticmethod
         def pi():
+            '''
+            -> interval
+            '''
             return interval(math.pi, rf.succ(math.pi))
 
         @staticmethod
+        def inf():
+            return interval(float('inf'))
+
+        @staticmethod
+        def nan():
+            return interval(float('nan'))
+
+        @staticmethod
         def sqrt(arg):
+            '''
+            arg : interval
+            -> interval
+            '''
             ans = interval(0.)
             ans.inf = rf.rdsqrt(arg.inf, rdm.down)
             ans.sup = rf.rdsqrt(arg.sup, rdm.up)
