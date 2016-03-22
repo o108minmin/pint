@@ -12,12 +12,9 @@ class interval:
     (jp)
     区間型クラス
     メンバー変数
-        - inf
-            infは区間の下端である
-        - sup
-            supは区間の上端である
-        - format_spec
-            format()を使用する際の第二引数
+        - inf : infは区間の下端である。
+        - sup : supは区間の上端である。
+        - format_spec : format()を使用する際の第二引数
             format(self, format_spec)のように呼び出される。
 
             self.format_spec = '.32g'
@@ -29,13 +26,10 @@ class interval:
 
     (en)
     interval class
-    member variables
-        - inf
-            inf is infimum of the interval
-        - sup
-            sup is supremum of the interval
-        - format_spec
-            The second parameter of format()
+    parameters
+        - inf : inf is infimum of the interval
+        - sup : sup is supremum of the interval
+        - format_spec : The second parameter of format()
     warning
         - This class is only for float class
     '''
@@ -45,6 +39,27 @@ class interval:
     format_spec = ''
 
     def __init__(self, *args):
+        '''
+        (jp)
+        引数の数は2つまで指定できる。引数がない場合、初期値が0として扱われる。
+        interval()
+        interval(1.)
+        interval(1., 2.)
+
+        引数にstring型を使用すると、正確に初期値を含んだ区間を生成する。
+        interval("0.1")
+
+
+        (en)
+        This class can use until two parameters.
+        If the number of parameters is zero, __init__ is initialized with zero.
+        interval()
+        interval(1.)
+        interval(1., 2.)
+
+        If the class of parameters is string, __init__ generates correct interval.
+        interval("0.1")
+        '''
         length = len(args)
         if length == 0:
             self.sup = 0.
