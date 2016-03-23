@@ -835,6 +835,7 @@ class interval:
             tmp2 = interval.math.exp_point(x.sup)
             return interval(tmp1.inf, tmp2.sup)
 
+        @staticmethod
         def expm1_origin(x):
             '''
             x : float
