@@ -736,6 +736,11 @@ class interval:
 
         @staticmethod
         def pow(x, i):
+            '''
+            x : interval
+            i : int, interval
+            -> interval
+            '''
             if i.__class__.__name__ == "interval":
                 return interval.math.exp(i * interval.math.log(x))
             ans = interval(0.)
@@ -756,6 +761,9 @@ class interval:
 
         @staticmethod
         def ln2():
+            '''
+            -> interval
+            '''
             eps = sys.float_info.epsilon
             x2 = interval.math.sqrt(interval.math.sqrt(interval(2.)))
             x2m1 = x2 - 1.
@@ -831,6 +839,10 @@ class interval:
 
         @staticmethod
         def exp(x):
+            '''
+            x : interval
+            -> interval
+            '''
             tmp1 = interval.math.exp_point(x.inf)
             tmp2 = interval.math.exp_point(x.sup)
             return interval(tmp1.inf, tmp2.sup)
@@ -884,13 +896,21 @@ class interval:
 
         @staticmethod
         def expm1(x):
-
+            '''
+            x : interval
+            -> interval
+            '''
             ans_inf = interval.math.expm1_point(x.inf)
             ans_sup = interval.math.expm1_point(x.sup)
             return interval(ans_inf.inf, ans_sup.sup)
 
         @staticmethod
         def ldexp(x, i):
+            '''
+            x : interval
+            i : int, interval
+            -> interval
+            '''
             return x * (2 ** i)
 
         @staticmethod
@@ -965,6 +985,11 @@ class interval:
 
         @staticmethod
         def log(x, base=math.e):
+            '''
+            x : interval
+            base : float
+            -> interval
+            '''
             if x.inf < 0.:
                 sys.stderr.write("math domain error ")
                 sys.exit()
@@ -979,10 +1004,18 @@ class interval:
 
         @staticmethod
         def log2(x):
+            '''
+            x : interval
+            -> interval
+            '''
             return interval.math.log(x, 2)
 
         @staticmethod
         def log10(x):
+            '''
+            x : interval
+            -> interval
+            '''
             return interval.math.log(x, 10)
 
         @staticmethod
@@ -1046,6 +1079,10 @@ class interval:
 
         @staticmethod
         def log1p(x):
+            '''
+            x : interval
+            -> interval
+            '''
             if x.inf < -1.:
                 sys.stderr.write("math domain error ")
                 sys.exit()
@@ -1123,6 +1160,10 @@ class interval:
 
         @staticmethod
         def sin(x):
+            '''
+            x : interval
+            -> interval
+            '''
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
             if interval.math.isinf(x) is True:
@@ -1217,6 +1258,10 @@ class interval:
 
         @staticmethod
         def cos(x):
+            '''
+            x : interval
+            -> interval
+            '''
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
             if interval.math.isinf(x) is True:
@@ -1261,6 +1306,10 @@ class interval:
 
         @staticmethod
         def tan(x):
+            '''
+            x : interval
+            -> interval
+            '''
             itv_pi = interval.math.pi()
             itv_pih = itv_pi * 0.5
             if interval.math.isinf(x) is True:
@@ -1339,6 +1388,10 @@ class interval:
 
         @staticmethod
         def atan(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.atan_point(x.inf)
             t2 = interval.math.atan_point(x.sup)
             return interval(t1.inf, t2.sup)
@@ -1380,6 +1433,10 @@ class interval:
 
         @staticmethod
         def asin(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.asin_point(x.inf)
             t2 = interval.math.asin_point(x.sup)
             return interval(t1.inf, t2.sup)
@@ -1444,6 +1501,10 @@ class interval:
 
         @staticmethod
         def acos(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.acos_point(x.sup)
             t2 = interval.math.acos_point(x.inf)
             return interval(t1.inf, t2.sup)
@@ -1478,6 +1539,11 @@ class interval:
 
         @staticmethod
         def atan2(Iy, Ix):
+            '''
+            Iy : interval
+            Ix : interval
+            -> interval
+            '''
             itv_pi = interval.math.pi()
             itv_pi2 = itv_pi * 2.
             if interval.zero_in(Ix) is True:
@@ -1583,6 +1649,10 @@ class interval:
 
         @staticmethod
         def sinh(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.sinh_point(x.inf)
             t2 = interval.math.sinh_point(x.sup)
             return interval(t1.inf, t2.sup)
@@ -1607,6 +1677,10 @@ class interval:
 
         @staticmethod
         def cosh(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.cosh_point(x.inf)
             t2 = interval.math.cosh_point(x.sup)
             r = interval.hull(t1, t2)
@@ -1636,6 +1710,10 @@ class interval:
 
         @staticmethod
         def tanh(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.tanh_point(x.inf)
             t2 = interval.math.tanh_point(x.sup)
             return interval(t1.inf, t2.sup)
@@ -1664,6 +1742,10 @@ class interval:
 
         @staticmethod
         def asinh(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.asinh_point(x.inf)
             t2 = interval.math.asinh_point(x.sup)
             return interval(t1.inf, t2.sup)
@@ -1695,12 +1777,21 @@ class interval:
 
         @staticmethod
         def acosh(x):
+            '''
+            x : interval
+            -> interval
+            '''
             t1 = interval.math.acosh_point(x.inf)
             t2 = interval.math.acosh_point(x.sup)
             return interval(t1.inf, t2.sup)
 
         @staticmethod
         def hypot(x, y):
+            '''
+            x : interval
+            y : interval
+            -> interval
+            '''
             if x * x == interval(float("inf")) or y * y == interval(float("inf")):
                 max_arg = max(x, y)
                 min_arg = min(x, y)
