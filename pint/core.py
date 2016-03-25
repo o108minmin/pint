@@ -1,18 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+core system for pint
+'''
 
 from sys import float_info
 import math
 from enum import IntEnum
 
 class roundmode(IntEnum):
+    '''
+    rounding mode such as INTLAB
+    '''
     up = 1
     nearest = 0
     down = -1
 
 
 class roundfloat:
+    '''
+    # Calculate addition, subtraction, multiplication, division and root with rounding mode.
 
+    # using exsample
+    from pint import roundfloat as rf
+    from pint import roundmode as rdm
+
+    # Calculate 0.25 + 0.1 with rounding to up.
+    rf.rdadd(0.25, 0.1, rdm.up)
+
+    # Calculate 0.25 - 0.1 with rounding to down
+    rf.rdsub(0.25, 0.1, rdm.down)
+    '''
     def split(a):
         tmp = a * (2**27 + 1)
         x = tmp - (tmp - a)
