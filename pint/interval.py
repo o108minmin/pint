@@ -6,6 +6,7 @@ from .core import roundfloat as rf
 import math
 import sys
 from .floattools import stringtofraction
+from .floattools import verified_digits
 
 class interval:
     '''
@@ -36,7 +37,7 @@ class interval:
 
     inf = 0.
     sup = 0.
-    format_spec = ''
+    format_spec = '.64f'
 
     def __init__(self, *args):
         '''
@@ -255,15 +256,14 @@ class interval:
         return self.format(self, *format_spec)
 
     def str(self):
-        ans_inf = str(self.inf)
-        ans_sup = str(self.sup)
-        return '[' + ans_inf + ',' + ans_sup + ']'
+        return self.format(self)
 
     def __str__(self, *args):
         return self.str()
 
     def __repr__(self):
-        return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
+        return self.format(self)
+        # return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
 
     def __neg__(self):
         return interval(-self.sup, -self.inf)
@@ -574,6 +574,15 @@ class interval:
         if arg.sup < tmp2:
             tmp2 = arg.sup
         return interval(tmp1, tmp2)
+
+    def verified_digits(self):
+        digits = verified_digits(self.inf, self.sup)
+        digits -= 1
+        return digits
+
+    def verified(self):
+        digits = verified_digits(self.inf, self.sup)
+        return str(self.inf)[:digits]
 
     # math functions
     class math:

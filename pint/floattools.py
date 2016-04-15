@@ -56,3 +56,52 @@ def stringtofraction(arg):
         ans = fractions.Fraction(int(arg_num), 1)
     ans *= e
     return ans
+
+def verified_digits(x, y):
+    digits = 0
+    str_x = format(x, '.64f')
+    str_y = format(y, '.64f')
+    if len(str_x) > len(str_y):
+        for i in range(0, len(str_x)):
+            str_y += '0'
+    elif len(str_y) > len(str_x):
+        for i in range(0, len(str_y)):
+            str_x += '0'
+    if str_x.find('e') > 0:
+        x_num, x_e = str_x.split('e')
+    else:
+        x_num = str_x
+        x_e = 0
+    if str_y.find('e') > 0:
+        y_num, y_e = str_y.split('e')
+    else:
+        y_num = str_y
+        y_e = 0
+    if x_e != y_e:
+        return 0
+    if x_num.find('.') > 0:
+        x_up, x_down = x_num.split('.')
+    else:
+        x_up = x_num
+        x_down = ''
+    if y_num.find('.') > 0:
+        y_up, y_down = y_num.split('.')
+    else:
+        y_up = y_num
+        y_down = ''
+    if x_up == y_up:
+        digits += len(x_up)
+    else:
+        if len(x_up) != len(y_up):
+            return 0
+        tf = [x_up[i] == y_up[i] for i in range(min([len(x_up), len(y_up)]))]
+        tf.append(False)
+        digits += tf.index(False)
+        return digits
+    if x_down == y_down:
+        digits += len(x_down) + 1
+    else:
+        tf = [x_down[i] == y_down[i] for i in range(min([len(x_down), len(y_down)]))]
+        tf.append(False)
+        digits += tf.index(False) + 1
+    return digits
