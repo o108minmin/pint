@@ -582,7 +582,8 @@ class interval:
 
     def verified(self):
         digits = verified_digits(self.inf, self.sup)
-        return str(self.inf)[:digits]
+        str_self = format(self.inf, '.' + str(digits + 1) + 'f')
+        return str_self[:digits]
 
     # math functions
     class math:
