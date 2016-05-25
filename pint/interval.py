@@ -175,7 +175,7 @@ class interval:
     def __truediv__(self, arg):
         ans = interval(0.)
         if arg.__class__.__name__ == 'interval':
-            if arg.inf > 0.:
+            if arg.inf >= 0.:
                 if self.inf >= 0.:
                     ans.inf = rf.rddiv(
                         self.inf, arg.sup, rdm.down)
@@ -191,7 +191,7 @@ class interval:
                         self.inf, arg.inf, rdm.down)
                     ans.sup = rf.rddiv(
                         self.sup, arg.inf, rdm.up)
-            elif arg.sup < 0.:
+            elif arg.sup <= 0.:
                 if self.inf >= 0.:
                     ans.inf = rf.rddiv(
                         self.sup, arg.sup, rdm.down)
@@ -208,7 +208,7 @@ class interval:
                     ans.sup = rf.rddiv(
                         self.inf, arg.sup, rdm.up)
             else:
-                if arg > 0.:
+                if arg >= 0.:
                     ans.inf = rf.rddiv(self.inf, arg, rdm.down)
                     ans.sup = rf.rddiv(self.sup, arg, rdm.up)
                 elif arg < 0.:
