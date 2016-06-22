@@ -42,6 +42,10 @@ def stringtofraction(arg):
     stringtofraction("1e100")
     stringtofraction("3.14e100")
     '''
+    if arg.find("-") >= 0:
+        arg_sign = -1
+    else:
+        arg_sign = 1
     if arg.find("e") >= 0:
         arg_num, arg_e = arg.split("e")
         e = fractions.Fraction(10, 1) ** int(arg_e)
@@ -55,6 +59,8 @@ def stringtofraction(arg):
     else:
         ans = fractions.Fraction(int(arg_num), 1)
     ans *= e
+    if math.copysign(ans, arg_sign) != ans:
+        ans *= arg_sign
     return ans
 
 def verified_digits(x, y):
@@ -105,3 +111,6 @@ def verified_digits(x, y):
         tf.append(False)
         digits += tf.index(False) + 1
     return digits
+
+def numbertofractton(arg):
+    pass
