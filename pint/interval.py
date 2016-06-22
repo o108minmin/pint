@@ -824,14 +824,14 @@ class interval:
                 # x_fは小数部分か
                 x_f = x - x_i
                 if x_f >= 0.5:
-                    x_f = 1.
-                    x_i = 1.
+                    x_f -= 1.
+                    x_i += 1.
             else:
-                x_i = -math.floor(x)
+                x_i = -math.floor(-x)
                 x_f = x - x_i
                 if x_f <= -0.5:
                     x_f += 1.
-                    x_i += 1.
+                    x_i -= 1.
             r = interval(1.)
             y = interval(1.)
             i = 1
@@ -873,7 +873,7 @@ class interval:
             supporting function for exp_point
             '''
 
-            ans = interval(0.)
+            ans = interval(1.)
             y = interval(1.)
             sqrt_e = interval.math.sqrt(interval.math.e())
             re = interval((1. / sqrt_e).inf, sqrt_e.sup)
