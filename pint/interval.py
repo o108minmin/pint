@@ -266,7 +266,10 @@ class interval:
         # return '[' + repr(self.inf) + ',' + repr(self.sup) + ']'
 
     def __neg__(self):
-        return interval(-self.sup, -self.inf)
+        return -1 * self
+
+    def __pos__(self):
+        return 1 * self
 
     def __abs__(arg):
         return arg.math.fabs(arg)
