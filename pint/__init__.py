@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .core import roundmode,roundfloat
 from .interval import interval
 from .vmath import vmath
 from .mcmatrix import mcmatrix
 from pint import floattools
+from pint import roundfloat
+from pint import roundmode
 
 __all__ = (
         'roundmode',

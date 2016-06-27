@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .core import roundmode as rdm
-from .core import roundfloat as rf
+from pint import roundmode as rdm
+from pint import roundfloat as rf
 import math
 import sys
 from .floattools import stringtofraction
@@ -955,8 +955,8 @@ class interval:
             x2, p_i = math.frexp(x)
             p = p_i
             while x2 > 4. * math.sqrt(2.) - 4.:
-                x2 = x2 * 0.5
-                p = p + 1.
+                x2 *= 0.5
+                p += 1.
             while x2 > 4. - 2. * math.sqrt(2.):
                 tmp = x2 / itv_sqrt2
                 if rd == -1:
@@ -1153,7 +1153,6 @@ class interval:
             itv_pi = interval.math.pi()
             mid_pi = interval.mid(itv_pi)
             if x.inf >= mid_pi:
-                print(x)
                 return interval.math.sin_point(x - (itv_pi * 2.))
             if x.sup <= -mid_pi * 0.75:
                 return -interval.math.sin_origin(x + itv_pi)

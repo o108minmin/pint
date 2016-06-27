@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from .core import roundfloat, roundmode
+from pint import roundfloat, roundmode
 from .interval import interval
 import math
 

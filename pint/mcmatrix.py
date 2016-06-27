@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .core import roundmode, roundfloat
+from pint import roundmode, roundfloat
 from .interval import interval
 
 
