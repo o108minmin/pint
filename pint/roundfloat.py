@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-a = 100
-
 from sys import float_info
 import math
 from math import ldexp
@@ -48,6 +46,12 @@ def pred(a):
 
 # by Masahide Kashiwagi
 # http://verifiedby.me/adiary/029
+
+def fasttwosum(a, b):
+    x = a + b
+	tmp = x - a
+	y = b - tmp
+    return x, y
 
 def twosum(a, b):
     arg1 = a
