@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
+a = 100
 
 from sys import float_info
 import math
 from math import ldexp
-from pint.roundmode import roundmode as rdm
-
+from pint.roundmode import roundmode
 '''
     # Calculate addition, subtraction, multiplication, division and root with rounding mode.
 
@@ -82,11 +82,11 @@ def twoproduct(a, b):
         y = aL * bL - (((x - aH * bH) - aL * bH) - aH * bL)
     return x, y
 
-def rdadd(a, b, rmode=rdm.nearest):
+def rdadd(a, b, rmode=roundmode.nearest):
     arg1 = a
     arg2 = b
     x, y = twosum(arg1, arg2)
-    if rmode == rdm.up:
+    if rmode == roundmode.up:
         if x == float('inf'):
             return x
         elif x == -float('inf'):
@@ -96,7 +96,7 @@ def rdadd(a, b, rmode=rdm.nearest):
                 return -float_info.max
         if y > 0:
             x = succ(x)
-    elif rmode == rdm.down:
+    elif rmode == roundmode.down:
         if x == float('inf'):
             if arg1 == float('inf') or arg2 == float('inf'):
                 return x
@@ -108,14 +108,14 @@ def rdadd(a, b, rmode=rdm.nearest):
             x = pred(x)
     return x
 
-def rdsub(a, b, rmode=rdm.nearest):
+def rdsub(a, b, rmode=roundmode.nearest):
     return rdadd(a, -b, rmode)
 
-def rdmul(a, b, rmode=rdm.nearest):
+def rdmul(a, b, rmode=roundmode.nearest):
     arg1 = a
     arg2 = b
     x, y = twoproduct(arg1, arg2)
-    if rmode == rdm.up:
+    if rmode == roundmode.up:
         if x == float('inf'):
             return x
         elif x == -float('inf'):
@@ -126,7 +126,7 @@ def rdmul(a, b, rmode=rdm.nearest):
         if abs(x) >= 2.**(-969):
             if y > 0:
                 x = succ(x)
-    elif rmode == rdm.down:
+    elif rmode == roundmode.down:
         if x == float('inf'):
             if math.fabs(arg1) == float('inf') or math.fabs(arg2) == float('inf'):
                 return x
@@ -145,10 +145,10 @@ def rdmul(a, b, rmode=rdm.nearest):
                 return pred(x)
     return x
 
-def rddiv(a, b, rmode=rdm.nearest):
+def rddiv(a, b, rmode=roundmode.nearest):
     arg1 = a
     arg2 = b
-    if rmode == rdm.up:
+    if rmode == roundmode.up:
         pass
         if (arg1 == 0. or arg2 == 0. or
             math.fabs(arg1) == float('inf') or math.fabs(arg2) == float('inf') or
@@ -179,7 +179,7 @@ def rddiv(a, b, rmode=rdm.nearest):
         if x < arg1fix or (x == arg1fix and y < 0.):
             return succ(d)
         return d
-    elif rmode == rdm.down:
+    elif rmode == roundmode.down:
         if (arg1 == 0. or arg2 == 0. or
             abs(arg1) == float('inf') or abs(arg2) == float('inf') or
                 arg1 != arg1 or arg2 != arg2):
@@ -209,10 +209,10 @@ def rddiv(a, b, rmode=rdm.nearest):
             return pred(d)
         return d
 
-def rdsqrt(x, rmode=rdm.nearest):
+def rdsqrt(x, rmode=roundmode.nearest):
     arg = x
     d = math.sqrt(arg)
-    if rmode == rdm.up:
+    if rmode == roundmode.up:
         if arg < 2.**(-969):
             a2 = arg * 2.**106
             d2 = d * 2.**53
@@ -222,7 +222,7 @@ def rdsqrt(x, rmode=rdm.nearest):
         x, y = twoproduct(d, d)
         if x < arg or (x == arg and y < 0.):
             d = succ(d)
-    if rmode == rdm.down:
+    if rmode == roundmode.down:
         if arg < 2.**(-969):
             a2 = arg * 2.**106
             d2 = d * 2.**53
