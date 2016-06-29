@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pint import roundmode as rdm
+from pint.roundmode import roundmode as rdm
 from pint import roundfloat as rf
 import math
 import sys
